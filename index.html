@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Restock board</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+:root{
+  --bg:#E7EDF0; --card:#FFFFFF; --ink:#142A3A; --muted:#4F636D; --line:#C3CFD5;
+  --today:#C93A1E; --soon:#1D6E8C; --making:#8A5A00; --making-bg:#FFE6A8; --done:#25703F;
+  --btn:#142A3A; --btn-ink:#FFFFFF; --on-accent:#FFFFFF; --shadow:#B4C3CB;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1C25; --card:#182833; --ink:#E8F0F3; --muted:#9DB0BA; --line:#2C414E;
+    --today:#FF8466; --soon:#5BBBD9; --making:#F0B73E; --making-bg:#3A2E0C; --done:#5FC48A;
+    --btn:#E8F0F3; --btn-ink:#0F1C25; --on-accent:#0F1C25; --shadow:#0A141A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1C25; --card:#182833; --ink:#E8F0F3; --muted:#9DB0BA; --line:#2C414E;
+  --today:#FF8466; --soon:#5BBBD9; --making:#F0B73E; --making-bg:#3A2E0C; --done:#5FC48A;
+  --btn:#E8F0F3; --btn-ink:#0F1C25; --on-accent:#0F1C25; --shadow:#0A141A;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--soon);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 48px}
+
+/* top bar */
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:26px}
+.live{font-family:var(--body);font-weight:400;font-size:15px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--done)}
+.dot.off{background:var(--today)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:10px 18px;font-weight:700;min-height:48px}
+.seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+
+/* sections */
+.sec{margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec h2{font-size:28px;font-weight:800}
+.count{color:var(--muted);font-size:17px}
+.tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:2px solid var(--ink);background:transparent;border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700}
+.chip[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+
+/* kitchen tickets */
+.ticket{background:var(--card);border:2px solid var(--ink);border-radius:6px 6px 18px 18px;box-shadow:5px 5px 0 var(--shadow);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.ticket::before{content:"";height:12px;background:var(--soon)}
+.ticket.u-today::before{background:var(--today)}
+.t-head{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:12px 16px 10px;border-bottom:2px dashed var(--line);font-size:15px;color:var(--muted)}
+.tag{background:var(--soon);color:var(--on-accent);font-weight:700;font-size:15px;border-radius:999px;padding:3px 12px}
+.u-today .tag{background:var(--today)}
+.t-body{padding:14px 16px 6px}
+.t-body h3{font-size:34px;font-weight:800;overflow-wrap:anywhere}
+.qty{margin:8px 0 0;font-size:20px}
+.qty b{font-family:var(--display);font-size:56px;font-weight:800;line-height:1;margin-right:8px}
+.note{margin:10px 0 0;padding:8px 12px;border-left:5px solid var(--line);color:var(--muted);overflow-wrap:anywhere}
+.t-foot{padding:14px 16px 16px;display:flex;gap:10px;flex-wrap:wrap}
+.big{flex:1 1 auto;min-height:64px;border:0;border-radius:12px;background:var(--btn);color:var(--btn-ink);font-weight:700;font-size:21px;padding:10px 20px}
+.big.go{background:var(--done);color:#fff}
+.ghost{min-height:64px;border:2px solid var(--ink);background:transparent;border-radius:12px;font-weight:700;padding:10px 18px}
+.making-flag{background:var(--making-bg);color:var(--making);font-weight:700;padding:8px 16px;border-bottom:2px dashed var(--line)}
+.ticket.fresh{animation:pulse 1.2s ease-in-out 3}
+@keyframes pulse{50%{box-shadow:0 0 0 6px var(--today)}}
+.empty{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:28px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-family:var(--display);font-size:24px;margin-bottom:4px}
+
+/* shop */
+.rows{display:grid;gap:10px}
+.row{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.row .nm{flex:1 1 180px;font-weight:700;overflow-wrap:anywhere}
+.row .nm small{display:block;font-weight:400;color:var(--muted)}
+.pill{font-weight:700;font-size:15px;border-radius:999px;padding:4px 12px;background:var(--line);color:var(--ink)}
+.pill.making{background:var(--making-bg);color:var(--making)}
+.pill.sent{background:var(--done);color:var(--on-accent)}
+.small{min-height:48px;border:2px solid var(--ink);background:transparent;border-radius:10px;padding:6px 16px;font-weight:700}
+.small.solid{background:var(--btn);color:var(--btn-ink)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.item{position:relative;min-height:84px;text-align:left;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:12px 14px;font-weight:700;display:flex;flex-direction:column;justify-content:center;overflow-wrap:anywhere}
+.item small{font-weight:400;color:var(--muted)}
+.items.edit .item{padding-right:56px}
+.x{position:absolute;top:6px;right:6px;width:44px;height:44px;border-radius:50%;border:2px solid var(--today);color:var(--today);background:var(--card);font-size:22px;line-height:1;display:grid;place-items:center}
+.sub{margin:18px 0 8px;font-size:20px;font-weight:800;font-family:var(--display)}
+
+/* selection tiles + tray */
+.item.sel{border-width:3px;border-color:var(--soon);gap:8px}
+.iname{overflow-wrap:anywhere}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.stepper button{width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);background:transparent;font-size:26px;font-weight:700;line-height:1}
+.stepper b{font-family:var(--display);font-size:30px;font-weight:800}
+.sel-card{border-color:var(--soon);border-width:3px}
+.tray-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:20px}
+.link{border:0;background:transparent;text-decoration:underline;font-weight:700;min-height:44px;padding:0 6px}
+.lines{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.lines li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding:4px 0}
+.when{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.when button{min-height:52px;border:2px solid var(--ink);background:transparent;border-radius:12px;font-weight:700}
+.when button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+input[type=text],select{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:12px;min-height:52px;width:100%}
+label.f{display:grid;gap:6px;font-weight:700}
+.panel{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:16px;margin-bottom:16px;display:grid;gap:12px}
+.panel h2{font-size:26px;font-weight:800}
+.acts{display:flex;gap:10px}
+.acts .big,.acts .ghost{min-height:58px}
+
+.notice{background:var(--card);border:2px solid var(--today);border-radius:14px;padding:14px 16px;margin-bottom:16px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--btn);color:var(--btn-ink);padding:12px 20px;border-radius:12px;font-weight:700;z-index:50;max-width:calc(100% - 32px)}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.ticket.fresh{animation:none;outline:4px solid var(--today)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="brand"><span aria-hidden="true">☕</span> Restock board <span class="live" id="live"></span></div>
+    <div class="seg" role="group" aria-label="Choose your view">
+      <button type="button" data-role="kitchen" aria-pressed="true">Kitchen</button>
+      <button type="button" data-role="shop" aria-pressed="false">Shop</button>
+    </div>
+  </header>
+  <div id="notice"></div>
+  <section class="panel" id="namePanel" hidden>
+    <h2>Who is sending requests?</h2>
+    <label class="f">Your name <input id="nName" type="text" maxlength="30" placeholder="e.g. Mia"></label>
+    <button type="button" class="big" data-act="save-name">Save name</button>
+  </section>
+  <section class="panel" id="addPanel" hidden>
+    <h2>Add an item</h2>
+    <label class="f">Name <input id="aName" type="text" maxlength="60" placeholder="e.g. Hazelnut syrup"></label>
+    <label class="f">Type <select id="aKind"><option value="pastry">Pastry</option><option value="ingredient">Ingredient</option></select></label>
+    <label class="f">Counted in <input id="aUnit" type="text" maxlength="20" value="pcs" placeholder="pcs, kg, bottles, trays"></label>
+    <div class="acts"><button type="button" class="ghost" data-act="add-close">Cancel</button><button type="button" class="big" data-act="add-save">Save item</button></div>
+  </section>
+  <main id="app" aria-live="polite"></main>
+  <section class="panel" id="connPanel" hidden style="margin-top:28px">
+    <h2>Connection</h2>
+    <p class="count" id="cStatus" style="margin:0"></p>
+    <label class="f">Database URL <input id="cDb" type="text" placeholder="https://your-project-default-rtdb.firebaseio.com" autocapitalize="off" autocorrect="off"></label>
+    <label class="f">Family code <input id="cCode" type="text" placeholder="a long private phrase" autocapitalize="off" autocorrect="off"></label>
+    <div class="acts"><button type="button" class="ghost" data-act="conn-test">Test connection</button><button type="button" class="big" data-act="conn-save">Save and connect</button></div>
+    <p id="cResult" style="margin:0;font-weight:700" aria-live="polite"></p>
+    <div class="acts"><button type="button" class="ghost" data-act="conn-demo">Use demo mode</button></div>
+    <label class="f">Link to share with your family <input id="cLink" type="text" readonly></label>
+    <div class="acts"><button type="button" class="ghost" data-act="conn-copy">Copy link</button><button type="button" class="ghost" data-act="conn-close">Close</button></div>
+  </section>
+  <p style="margin-top:32px"><button type="button" class="chip" data-act="conn-open">Connection settings</button></p>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+
+  /* Optional: paste your Firebase Realtime Database URL and a private family code here
+     instead of using the share link. Leave empty to use the link from Connection settings. */
+  var CONFIG = { databaseUrl: '', familyCode: '' };
+
+  var STARTER = [
+    ['Croissant','pastry','pcs'],['Banana bread','pastry','loaves'],['Cinnamon roll','pastry','pcs'],
+    ['Chocolate chip cookie','pastry','pcs'],['Brownie','pastry','pcs'],['Blueberry muffin','pastry','pcs'],
+    ['Caramel syrup','ingredient','bottles'],['Vanilla syrup','ingredient','bottles'],['Chocolate sauce','ingredient','bottles'],
+    ['Cold brew concentrate','ingredient','liters'],['Pastry cream','ingredient','kg'],['Cookie dough','ingredient','kg']
+  ];
+  var STATUS_LABEL = { requested:'Waiting', making:'Being made', sent:'On the way', received:'Received' };
+
+  var state = { items:[], requests:[], role:'kitchen', soundOn:false, showDone:false, editList:false, mode:'demo',
+                connected:false, syncErr:'', me:'', fresh:{}, cart:{}, urgency:'today', note:'', addOpen:false, connOpen:false };
+  var audio = null, busy = {}, backend = null;
+
+  try { var r = localStorage.getItem('rb-role'); if (r === 'shop' || r === 'kitchen') state.role = r; } catch(e){}
+  try { state.soundOn = localStorage.getItem('rb-sound') === '1'; } catch(e){}
+  try { state.me = localStorage.getItem('rb-name') || ''; } catch(e){}
+
+  /* ---------- helpers ---------- */
+  function toast(msg){
+    var t = $('#toast'); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 3200);
+  }
+  function ago(ts){
+    var m = Math.round((Date.now() - (ts || 0)) / 60000);
+    if (m < 1) return 'just now';
+    if (m < 60) return m + ' min ago';
+    var h = Math.round(m / 60);
+    if (h < 24) return h + ' h ago';
+    return Math.round(h / 24) + ' d ago';
+  }
+  function nameOf(by){ return !by ? 'Someone' : (by === state.me ? 'you' : by); }
+  function slug(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'item'; }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function byAge(a,b){ return (a.createdAt||0) - (b.createdAt||0); }
+
+  /* ---------- connection settings ---------- */
+  function cfg(){
+    var p = null; try { p = new URLSearchParams(location.search); } catch(e){}
+    var d = p && p.get('db'), k = p && p.get('code');
+    if (d && k) { try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, code:k })); } catch(e){} return { db:d, code:k }; }
+    try { var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null'); if (st && st.db && st.code) return st; } catch(e){}
+    if (CONFIG.databaseUrl && CONFIG.familyCode) return { db:CONFIG.databaseUrl, code:CONFIG.familyCode };
+    return null;
+  }
+  function pageBase(){ return location.href.split('#')[0].split('?')[0]; }
+  function shareLink(db, code){
+    if (!db || !code) return '';
+    return pageBase() + '?db=' + encodeURIComponent(db.trim()) + '&code=' + encodeURIComponent(code.trim());
+  }
+
+  function normDb(raw){
+    var t = String(raw || '').trim().replace(/^["']+|["']+$/g, '');
+    if (!t) return { ok:false, msg:'Paste the database URL first.' };
+    if (!/^https?:\/\//i.test(t)) t = 'https://' + t;
+    var u; try { u = new URL(t); } catch(e){ return { ok:false, msg:'That does not look like a web address. Copy the database URL from the top of the Data tab in Firebase.' }; }
+    var h = u.hostname.toLowerCase();
+    if (/(^|\.)console\.firebase\.google\.com$/.test(h) || /(^|\.)firebase\.google\.com$/.test(h))
+      return { ok:false, msg:'That is the Firebase console address. You need the database URL instead: open Realtime Database, then the Data tab, and copy the address shown at the top. It ends in firebaseio.com or firebasedatabase.app.' };
+    if (!/(\.firebaseio\.com|\.firebasedatabase\.app)$/.test(h) && !/^(localhost|127\.0\.0\.1)$/.test(h))
+      return { ok:false, msg:'The database URL should end in firebaseio.com or firebasedatabase.app. Copy it from the top of the Data tab in Firebase Realtime Database.' };
+    return { ok:true, url: u.origin, host: h };
+  }
+  function boardRoot(c){
+    var n = normDb(c.db);
+    return (n.ok ? n.url : String(c.db).trim().replace(/\/+$/, '')) + '/boards/' + encodeURIComponent(String(c.code).trim().replace(/[.$#\[\]\/\s]/g, '-'));
+  }
+  async function testConn(dbRaw, codeRaw){
+    var n = normDb(dbRaw); if (!n.ok) return n.msg;
+    if (!String(codeRaw || '').trim()) return 'Choose a family code first.';
+    var res;
+    try { res = await fetch(boardRoot({ db: dbRaw, code: codeRaw }) + '.json'); }
+    catch(e){
+      var framed = false; try { framed = window.top !== window.self; } catch(x){ framed = true; }
+      return 'Could not reach ' + n.host + '. Check the spelling of the URL (databases outside the US usually end in firebasedatabase.app), turn off any ad-blocker for this page, and make sure the page is opened directly in your browser' +
+             (framed ? ' (it looks like it is being shown inside another app or preview, which can block outside connections).' : '.');
+    }
+    if (res.status === 401 || res.status === 403) return 'Reached the database, but it refused access (HTTP ' + res.status + '). In Firebase open Realtime Database, then Rules, paste the rules from the setup steps and press Publish.';
+    if (res.status === 404) return 'The database address answered "not found" (HTTP 404). Check the URL, and make sure the Realtime Database has been created.';
+    if (!res.ok) return 'The database answered with an error (HTTP ' + res.status + ').';
+    return 'Connected \u2714 The database is reachable and this family code works.';
+  }
+
+  /* ---------- storage backends ---------- */
+  function makeFirebase(c){
+    var root = boardRoot(c);
+    var cb = null, running = false, again = false;
+    async function pull(){
+      if (running) { again = true; return; }
+      running = true;
+      try {
+        var res = await fetch(root + '.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var tree = await res.json();
+        if (cb) cb(tree || {}, null);
+      } catch(e){ if (cb) cb(null, e); }
+      running = false;
+      if (again) { again = false; pull(); }
+    }
+    return {
+      refresh: pull,
+      subscribe: function(f){
+        cb = f; pull();
+        try { var es = new EventSource(root + '.json'); es.addEventListener('put', pull); es.addEventListener('patch', pull); } catch(e){}
+        setInterval(pull, 15000);
+      },
+      send: async function(method, path, data){
+        var res = await fetch(root + '/' + path + '.json', { method: method, body: data === undefined ? undefined : JSON.stringify(data) });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+      }
+    };
+  }
+  function makeLocal(){
+    var KEY = 'rb-demo-tree', mem = {}, cb = null;
+    function load(){ try { var v = localStorage.getItem(KEY); if (v) return JSON.parse(v) || {}; } catch(e){} return JSON.parse(JSON.stringify(mem)); }
+    function save(t){ mem = t; try { localStorage.setItem(KEY, JSON.stringify(t)); } catch(e){} }
+    function pull(){ if (cb) cb(load(), null); }
+    return {
+      refresh: pull,
+      subscribe: function(f){
+        cb = f; pull();
+        window.addEventListener('storage', function(e){ if (e.key === KEY) pull(); });
+      },
+      send: async function(method, path, data){
+        var t = load(), parts = path.split('/'), col = parts[0];
+        t[col] = t[col] || {};
+        if (parts.length === 1) { if (method === 'PATCH') Object.assign(t[col], data); }
+        else if (method === 'PUT') t[col][parts[1]] = data;
+        else if (method === 'PATCH') t[col][parts[1]] = Object.assign({}, t[col][parts[1]], data);
+        else if (method === 'DELETE') delete t[col][parts[1]];
+        save(t);
+      }
+    };
+  }
+
+  /* ---------- sound ---------- */
+  function beep(){
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      if (!audio) audio = new AC();
+      if (audio.state === 'suspended') audio.resume();
+      [660, 880, 660].forEach(function(f, i){
+        var o = audio.createOscillator(), g = audio.createGain();
+        o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+        var t = audio.currentTime + i * 0.22;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.3, t + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+        o.start(t); o.stop(t + 0.21);
+      });
+    } catch(e){}
+  }
+  var ringMaster = null, ringTimer = null;
+  /* rings for `sec` seconds: a repeating two-tone chime, scheduled ahead on the audio clock */
+  function ring(sec){
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      if (!audio) audio = new AC();
+      if (audio.state === 'suspended') audio.resume();
+      if (ringMaster) { try { ringMaster.disconnect(); } catch(e){} clearTimeout(ringTimer); }
+      var master = audio.createGain(); master.connect(audio.destination); ringMaster = master;
+      var start = audio.currentTime + 0.05, reps = Math.floor(sec / 0.625);
+      for (var r = 0; r < reps; r++) {
+        [880, 660].forEach(function(f, i){
+          var o = audio.createOscillator(), g = audio.createGain();
+          o.frequency.value = f; o.connect(g); g.connect(master);
+          var t = start + r * 0.625 + i * 0.22;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.exponentialRampToValueAtTime(0.4, t + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+          o.start(t); o.stop(t + 0.21);
+        });
+      }
+      ringTimer = setTimeout(function(){ try { master.disconnect(); } catch(e){} if (ringMaster === master) ringMaster = null; }, sec * 1000 + 600);
+    } catch(e){}
+  }
+  document.addEventListener('pointerdown', function(){
+    if (state.soundOn && audio && audio.state === 'suspended') { try { audio.resume(); } catch(e){} }
+  });
+
+
+  /* ---------- rendering ---------- */
+  function paint(){
+    document.querySelectorAll('[data-role]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.role === state.role)); });
+    var live = $('#live');
+    if (state.mode === 'demo') live.innerHTML = '<span class="dot off"></span>Demo (this device only)';
+    else live.innerHTML = '<span class="dot' + (state.connected ? '' : ' off') + '"></span>' + (state.connected ? 'Live' : 'Offline');
+
+    var n = $('#notice'); n.innerHTML = '';
+    if (state.mode === 'demo') {
+      n.innerHTML = '<div class="notice"><strong>Demo mode.</strong> Requests stay on this device. To share with your family, open Connection settings at the bottom of the page.</div>';
+    } else if (state.syncErr) {
+      n.innerHTML = '<div class="notice"><strong>Can\u2019t reach the shared database</strong> (' + esc(state.syncErr) + '). Trying again. Open Connection settings and tap Test connection to see what is wrong.' +
+        '<div style="margin-top:10px"><button type="button" class="small solid" data-act="conn-open">Open Connection settings</button></div></div>';
+    }
+    $('#addPanel').hidden = !(state.role === 'shop' && state.addOpen);
+    $('#namePanel').hidden = !(state.role === 'shop' && !state.me);
+    $('#connPanel').hidden = !state.connOpen;
+
+    var pending = state.requests.filter(function(r){ return r.status === 'requested'; }).length;
+    document.title = (state.role === 'kitchen' && pending ? '(' + pending + ') ' : '') + 'Restock board';
+
+    var ae = document.activeElement, keep = (ae && ae.id === 'cNote') ? ae.selectionStart : null;
+    $('#app').innerHTML = state.role === 'kitchen' ? kitchenHTML() : shopHTML();
+    if (keep !== null) { var el = $('#cNote'); if (el) { el.focus(); try { el.setSelectionRange(keep, keep); } catch(x){} } }
+  }
+
+  function ticketHTML(r){
+    var making = r.status === 'making';
+    var fresh = state.fresh[r.id] && state.fresh[r.id] > Date.now();
+    return '<article class="ticket ' + (r.urgency === 'week' ? 'u-week' : 'u-today') + (fresh ? ' fresh' : '') + '">' +
+      (making ? '<div class="making-flag">Being made</div>' : '') +
+      '<div class="t-head"><span class="tag">' + (r.urgency === 'week' ? 'This week' : 'Today') + '</span>' +
+      '<span>' + esc(nameOf(r.by)) + ' · ' + esc(ago(r.createdAt)) + '</span></div>' +
+      '<div class="t-body"><h3>' + esc(r.name) + '</h3>' +
+      '<p class="qty"><b>' + esc(r.qty) + '</b>' + esc(r.unit || '') + '</p>' +
+      (r.note ? '<p class="note">' + esc(r.note) + '</p>' : '') + '</div>' +
+      '<div class="t-foot">' +
+      (making
+        ? '<button type="button" class="big go" data-act="status" data-id="' + esc(r.id) + '" data-to="sent">Mark as sent</button>' +
+          '<button type="button" class="ghost" data-act="status" data-id="' + esc(r.id) + '" data-to="requested">Undo</button>'
+        : '<button type="button" class="big" data-act="status" data-id="' + esc(r.id) + '" data-to="making">Start making</button>') +
+      '</div></article>';
+  }
+
+  function kitchenHTML(){
+    var open = state.requests.filter(function(r){ return r.status === 'requested' || r.status === 'making'; });
+    var today = open.filter(function(r){ return r.urgency !== 'week'; }).sort(byAge);
+    var week = open.filter(function(r){ return r.urgency === 'week'; }).sort(byAge);
+    var h = '<div class="sec"><h2>Make today</h2><span class="count">' + today.length + '</span>' +
+      '<div class="tools"><button type="button" class="chip" data-act="sound" aria-pressed="' + state.soundOn + '">' + (state.soundOn ? 'Sound on' : 'Sound off') + '</button></div></div>';
+    if (!open.length) {
+      h += '<div class="empty"><strong>Nothing to make right now.</strong>New requests from the shop show up here by themselves.</div>';
+    } else if (!today.length) {
+      h += '<div class="empty"><strong>Nothing needed today.</strong>Items for later this week are below.</div>';
+    } else {
+      h += '<div class="grid">' + today.map(ticketHTML).join('') + '</div>';
+    }
+    if (week.length) {
+      h += '<div class="sec"><h2>Make this week</h2><span class="count">' + week.length + '</span></div><div class="grid">' + week.map(ticketHTML).join('') + '</div>';
+    }
+    var done = state.requests.filter(function(r){ return r.status === 'sent' || r.status === 'received'; })
+      .sort(function(a,b){ return (b.updatedAt||0) - (a.updatedAt||0); }).slice(0, 12);
+    if (done.length) {
+      h += '<div class="sec"><h2>Already sent</h2><span class="count">' + done.length + '</span><div class="tools"><button type="button" class="chip" data-act="toggle-done" aria-pressed="' + state.showDone + '">' + (state.showDone ? 'Hide' : 'Show') + '</button></div></div>';
+      if (state.showDone) {
+        h += '<div class="rows">' + done.map(function(r){
+          return '<div class="row"><div class="nm">' + esc(r.name) + ' · ' + esc(r.qty) + ' ' + esc(r.unit || '') + '<small>' + esc(ago(r.updatedAt)) + '</small></div><span class="pill ' + (r.status === 'sent' ? 'sent' : '') + '">' + esc(STATUS_LABEL[r.status]) + '</span></div>';
+        }).join('') + '</div>';
+      }
+    }
+    return h;
+  }
+
+  function shopHTML(){
+    var mine = state.requests.filter(function(r){ return r.status !== 'received'; }).sort(byAge);
+    var h = selectionHTML();
+    if (mine.length) {
+      h += '<div class="sec"><h2>Open requests</h2><span class="count">' + mine.length + '</span></div><div class="rows">' +
+        mine.map(function(r){
+          var btn = r.status === 'sent'
+            ? '<button type="button" class="small solid" data-act="status" data-id="' + esc(r.id) + '" data-to="received">Got it</button>'
+            : (r.status === 'requested' ? '<button type="button" class="small" data-act="cancel" data-id="' + esc(r.id) + '">Cancel</button>' : '');
+          return '<div class="row"><div class="nm">' + esc(r.name) + ' · ' + esc(r.qty) + ' ' + esc(r.unit || '') +
+            '<small>' + (r.urgency === 'week' ? 'This week' : 'Today') + ' · ' + esc(nameOf(r.by)) + ' · ' + esc(ago(r.createdAt)) + '</small></div>' +
+            '<span class="pill ' + esc(r.status) + '">' + esc(STATUS_LABEL[r.status] || r.status) + '</span>' + btn + '</div>';
+        }).join('') + '</div>';
+    }
+    h += '<div class="sec"><h2>Ask for something</h2><div class="tools">' +
+      '<button type="button" class="chip" data-act="add-open">Add item</button>' +
+      (state.items.length ? '<button type="button" class="chip" data-act="toggle-edit" aria-pressed="' + state.editList + '">Edit list</button>' : '') + '</div></div>';
+    if (!state.items.length) {
+      h += '<div class="empty"><strong>No items yet.</strong>Start with a ready-made list of common pastries and ingredients, then edit it.' +
+        '<div style="margin-top:14px"><button type="button" class="small solid" data-act="seed">Load starter list</button></div></div>';
+      return h;
+    }
+    ['pastry','ingredient'].forEach(function(kind){
+      var list = state.items.filter(function(i){ return (i.kind || 'ingredient') === kind; })
+        .sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
+      if (!list.length) return;
+      h += '<div class="sub">' + (kind === 'pastry' ? 'Pastries' : 'Ingredients') + '</div><div class="items' + (state.editList ? ' edit' : '') + '">' +
+        list.map(function(i){
+          var q = state.cart[i.id] || 0;
+          var x = state.editList ? '<button type="button" class="x" data-act="remove-item" data-id="' + esc(i.id) + '" aria-label="Remove ' + esc(i.name) + ' from the list">×</button>' : '';
+          if (!q) {
+            return '<div style="position:relative"><button type="button" class="item" style="width:100%;height:100%" data-act="inc" data-id="' + esc(i.id) + '">' + esc(i.name) + '<small>' + esc(i.unit || 'pcs') + ' · tap to add</small></button>' + x + '</div>';
+          }
+          return '<div style="position:relative"><div class="item sel" style="height:100%"><div class="iname">' + esc(i.name) + ' <small>' + esc(i.unit || 'pcs') + '</small></div>' +
+            '<div class="stepper"><button type="button" data-act="dec" data-id="' + esc(i.id) + '" aria-label="One less ' + esc(i.name) + '">−</button><b>' + q + '</b>' +
+            '<button type="button" data-act="inc" data-id="' + esc(i.id) + '" aria-label="One more ' + esc(i.name) + '">+</button></div></div>' + x + '</div>';
+        }).join('') + '</div>';
+    });
+    var cnt = Object.keys(state.cart).filter(function(id){ return itemById(id); }).length;
+    if (cnt) h += '<div style="margin-top:22px"><button type="button" class="big" style="width:100%" data-act="send">Confirm and send ' + cnt + (cnt === 1 ? ' item' : ' items') + '</button></div>';
+    return h;
+  }
+
+
+  /* ---------- live data ---------- */
+  var seen = {}, loaded = false;
+  function applyTree(tree){
+    tree = tree || {};
+    var its = tree.items || {}, rq = tree.requests || {};
+    state.items = Object.keys(its).map(function(id){ return Object.assign({}, its[id], { id: id }); });
+    state.requests = Object.keys(rq).map(function(id){ return Object.assign({}, rq[id], { id: id }); })
+      .sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); }).slice(0, 200);
+    Object.keys(state.cart).forEach(function(id){ if (!itemById(id)) delete state.cart[id]; });
+    var incoming = false;
+    state.requests.forEach(function(r){
+      if (!loaded) { seen[r.id] = true; return; }
+      if (!seen[r.id]) {
+        seen[r.id] = true;
+        if (r.status === 'requested') { state.fresh[r.id] = Date.now() + 20000; incoming = true; }
+      }
+    });
+    loaded = true;
+    if (incoming && state.role === 'kitchen' && state.soundOn) ring(5);
+    paint();
+  }
+
+  /* ---------- actions ---------- */
+  async function safe(key, fn, okMsg){
+    if (busy[key]) return; busy[key] = true;
+    try { await fn(); if (okMsg) toast(okMsg); backend.refresh(); }
+    catch(e){ toast('That did not save (' + ((e && e.message) || 'error') + '). Try again.'); backend.refresh(); }
+    finally { delete busy[key]; }
+  }
+
+  function itemById(id){ return state.items.filter(function(i){ return i.id === id; })[0]; }
+  function selectionHTML(){
+    var ids = Object.keys(state.cart).filter(function(id){ return itemById(id); });
+    if (!ids.length) return '';
+    var lines = ids.map(function(id){
+      var it = itemById(id);
+      return '<li><span>' + esc(it.name) + '</span><b>× ' + state.cart[id] + ' ' + esc(it.unit || 'pcs') + '</b></li>';
+    }).join('');
+    var word = ids.length + (ids.length === 1 ? ' item' : ' items');
+    return '<section class="panel sel-card"><div class="tray-head"><strong>Your selection: ' + word + '</strong>' +
+      '<button type="button" class="link" data-act="clear">Clear all</button></div>' +
+      '<ul class="lines">' + lines + '</ul>' +
+      '<div class="when" role="group" aria-label="When do you need it?">' +
+      '<button type="button" data-act="urg" data-v="today" aria-pressed="' + (state.urgency === 'today') + '">Needed today</button>' +
+      '<button type="button" data-act="urg" data-v="week" aria-pressed="' + (state.urgency === 'week') + '">Needed this week</button></div>' +
+      '<label class="f">Note for the kitchen (optional)<input id="cNote" type="text" maxlength="140" value="' + esc(state.note) + '" placeholder="e.g. extra for the weekend rush"></label>' +
+      '<button type="button" class="big" data-act="send">Confirm and send ' + word + '</button></section>';
+  }
+  document.addEventListener('input', function(e){ if (e.target && e.target.id === 'cNote') state.note = e.target.value; });
+
+  document.addEventListener('input', function(e){
+    if (e.target && (e.target.id === 'cDb' || e.target.id === 'cCode')) $('#cLink').value = shareLink($('#cDb').value, $('#cCode').value);
+  });
+
+  document.addEventListener('click', function(e){
+    var rb = e.target.closest('[data-role]');
+    if (rb) { state.role = rb.dataset.role; try { localStorage.setItem('rb-role', state.role); } catch(x){} paint(); return; }
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    var a = b.dataset.act, id = b.dataset.id;
+
+    if (a === 'sound') {
+      state.soundOn = !state.soundOn;
+      try { localStorage.setItem('rb-sound', state.soundOn ? '1' : '0'); } catch(x){}
+      if (state.soundOn) beep();
+      paint(); return;
+    }
+    if (a === 'toggle-done') { state.showDone = !state.showDone; paint(); return; }
+    if (a === 'toggle-edit') { state.editList = !state.editList; paint(); return; }
+    if (a === 'inc') { state.cart[id] = Math.min(999, (state.cart[id] || 0) + 1); paint(); return; }
+    if (a === 'dec') { var q = (state.cart[id] || 0) - 1; if (q > 0) state.cart[id] = q; else delete state.cart[id]; paint(); return; }
+    if (a === 'clear') { state.cart = {}; state.note = ''; paint(); return; }
+    if (a === 'urg') { state.urgency = b.dataset.v; paint(); return; }
+    if (a === 'add-open') { state.addOpen = true; $('#aName').value = ''; $('#aUnit').value = 'pcs'; paint(); $('#addPanel').scrollIntoView({ block: 'nearest' }); $('#aName').focus(); return; }
+    if (a === 'add-close') { state.addOpen = false; paint(); return; }
+    if (a === 'save-name') {
+      var nm0 = $('#nName').value.trim(); if (!nm0) { toast('Type your name first.'); return; }
+      state.me = nm0; try { localStorage.setItem('rb-name', nm0); } catch(x){} paint(); toast('Saved. You can send requests now.'); return;
+    }
+    if (a === 'conn-open') {
+      var c = cfg(); $('#cDb').value = c ? c.db : ''; $('#cCode').value = c ? c.code : '';
+      $('#cLink').value = c ? shareLink(c.db, c.code) : '';
+      $('#cStatus').textContent = state.mode === 'demo' ? 'Currently in demo mode: data stays on this device.' : 'Connected to the shared database.';
+      state.connOpen = true; paint(); $('#connPanel').scrollIntoView({ block: 'nearest' }); return;
+    }
+    if (a === 'conn-close') { state.connOpen = false; paint(); return; }
+    if (a === 'conn-copy') {
+      var link = $('#cLink'); if (!link.value) { toast('Fill in the database URL and family code first.'); return; }
+      link.select();
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link.value).then(function(){ toast('Link copied'); }, function(){ toast('Press and hold the link to copy it.'); });
+      else { try { document.execCommand('copy'); toast('Link copied'); } catch(x){ toast('Press and hold the link to copy it.'); } }
+      return;
+    }
+    if (a === 'conn-save') {
+      var d = $('#cDb').value.trim(), k = $('#cCode').value.trim();
+      var nd = normDb(d); if (!nd.ok) { $('#cResult').textContent = nd.msg; return; }
+      d = nd.url;
+      if (!k) { $('#cResult').textContent = 'Choose a family code.'; return; }
+      try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, code:k })); } catch(x){}
+      location.href = shareLink(d, k); return;
+    }
+    if (a === 'conn-test') {
+      var rs = $('#cResult'); rs.textContent = 'Testing\u2026';
+      testConn($('#cDb').value, $('#cCode').value).then(function(m){ rs.textContent = m; });
+      return;
+    }
+    if (a === 'conn-demo') {
+      try { localStorage.removeItem('rb-cfg'); } catch(x){}
+      location.href = pageBase(); return;
+    }
+
+    if (a === 'send') {
+      if (!state.me) { toast('Add your name first.'); paint(); return; }
+      var ids = Object.keys(state.cart).filter(function(i){ return itemById(i); });
+      if (!ids.length) return;
+      var urg = state.urgency, note = state.note.trim(), n = ids.length;
+      safe('order', async function(){
+        for (var k = 0; k < ids.length; k++) {
+          var it = itemById(ids[k]), rid = uid() + k;
+          var rec = { itemId: it.id, name: it.name, kind: it.kind || 'ingredient', unit: it.unit || 'pcs', qty: state.cart[ids[k]],
+                      urgency: urg, note: note, status: 'requested', by: state.me, createdAt: Date.now() + k, updatedAt: Date.now() };
+          seen[rid] = true;
+          state.requests.unshift(Object.assign({}, rec, { id: rid }));
+          await backend.send('PUT', 'requests/' + rid, rec);
+          delete state.cart[ids[k]];
+        }
+        state.note = '';
+      }, 'Sent ' + n + (n === 1 ? ' item' : ' items') + ' to the kitchen').then(function(){ paint(); });
+    } else if (a === 'status') {
+      state.requests.forEach(function(r){ if (r.id === id) { r.status = b.dataset.to; r.updatedAt = Date.now(); } }); paint();
+      safe('s' + id, function(){ return backend.send('PATCH', 'requests/' + id, { status: b.dataset.to, updatedAt: Date.now() }); });
+    } else if (a === 'cancel') {
+      state.requests = state.requests.filter(function(r){ return r.id !== id; }); paint();
+      safe('s' + id, function(){ return backend.send('DELETE', 'requests/' + id); }, 'Request cancelled');
+    } else if (a === 'remove-item') {
+      state.items = state.items.filter(function(i){ return i.id !== id; }); delete state.cart[id]; paint();
+      safe('i' + id, function(){ return backend.send('DELETE', 'items/' + id); }, 'Item removed');
+    } else if (a === 'add-save') {
+      var nm = $('#aName').value.trim(); if (!nm) { toast('Type a name first.'); return; }
+      var item = { name: nm, kind: $('#aKind').value, unit: $('#aUnit').value.trim() || 'pcs' };
+      var iid = slug(nm) + '-' + uid().slice(-4);
+      state.items.push(Object.assign({}, item, { id: iid })); state.addOpen = false; paint();
+      safe('add', function(){ return backend.send('PUT', 'items/' + iid, item); }, 'Item added');
+    } else if (a === 'seed') {
+      var all = {};
+      STARTER.forEach(function(s){ var sid = slug(s[0]); all[sid] = { name: s[0], kind: s[1], unit: s[2] }; state.items.push(Object.assign({}, all[sid], { id: sid })); });
+      paint();
+      safe('seed', function(){ return backend.send('PATCH', 'items', all); }, 'Starter list added');
+    }
+  });
+
+  function init(){
+    var c = cfg();
+    backend = c ? makeFirebase(c) : makeLocal();
+    state.mode = c ? 'cloud' : 'demo';
+    paint();
+    backend.subscribe(function(tree, err){
+      if (err) { state.connected = false; state.syncErr = (err && err.message) || 'error'; paint(); return; }
+      state.connected = true; state.syncErr = '';
+      applyTree(tree);
+    });
+  }
+  setInterval(paint, 60000);
+  init();
+})();
+</script>
+</body>
+</html>
