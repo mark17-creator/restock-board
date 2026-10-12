@@ -43,11 +43,18 @@ h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1}
 .live{font-family:var(--body);font-weight:400;font-size:15px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
 .dot{width:10px;height:10px;border-radius:50%;background:var(--done)}
 .dot.off{background:var(--today)}
-.seg{display:inline-flex;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
-.seg button{border:0;background:transparent;padding:10px 18px;font-weight:700;min-height:48px}
-.seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
 
 /* sections */
+.who{display:flex;align-items:center;gap:10px;font-weight:700;flex-wrap:wrap}
+.login{max-width:560px;margin:8px auto 24px}
+.roles{border:0;padding:0;margin:0;display:grid;gap:10px}
+.roles legend{font-weight:700;margin-bottom:8px;padding:0}
+.roles label{display:block}
+.roles input{position:absolute;opacity:0;pointer-events:none}
+.roles span{display:block;border:2px solid var(--ink);border-radius:14px;padding:14px 16px;min-height:64px}
+.roles span b{display:block;font-family:var(--display);font-size:24px}
+.roles input:checked + span{background:var(--btn);color:var(--btn-ink)}
+.roles input:focus-visible + span{outline:3px solid var(--soon);outline-offset:2px}
 .sec{margin:28px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .sec h2{font-size:28px;font-weight:800}
 .count{color:var(--muted);font-size:17px}
@@ -120,23 +127,54 @@ label.f{display:grid;gap:6px;font-weight:700}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--btn);color:var(--btn-ink);padding:12px 20px;border-radius:12px;font-weight:700;z-index:50;max-width:calc(100% - 32px)}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){.ticket.fresh{animation:none;outline:4px solid var(--today)}}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.pill.off{background:var(--today);color:var(--on-accent)}
+select.sm{min-height:48px;width:auto;padding:6px 10px}
+.hint{color:var(--muted);margin:0 0 12px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="bar">
     <div class="brand"><span aria-hidden="true">☕</span> Restock board <span class="live" id="live"></span></div>
-    <div class="seg" role="group" aria-label="Choose your view">
-      <button type="button" data-role="kitchen" aria-pressed="true">Kitchen</button>
-      <button type="button" data-role="shop" aria-pressed="false">Shop</button>
+    <div class="who" id="who" hidden>
+      <span id="whoName"></span>
+      <button type="button" class="chip" id="pwBtn" data-act="pw-open">Password</button>
+      <button type="button" class="chip" data-act="logout">Sign out</button>
     </div>
   </header>
   <div id="notice"></div>
-  <section class="panel" id="namePanel" hidden>
-    <h2>Who is sending requests?</h2>
-    <label class="f">Your name <input id="nName" type="text" maxlength="30" placeholder="e.g. Mia"></label>
-    <button type="button" class="big" data-act="save-name">Save name</button>
+  <div class="tabs" id="adminTabs" hidden></div>
+
+  <section class="panel login" id="login" hidden>
+    <h2>Sign in</h2>
+    <p class="count" id="lMsg" style="margin:0;font-weight:700" aria-live="polite"></p>
+    <div id="lDemo" hidden style="display:grid;gap:12px">
+      <label class="f">Your name <input id="lName" type="text" maxlength="30" placeholder="e.g. Mia" autocomplete="given-name"></label>
+      <fieldset class="roles" id="lRoles">
+        <legend>Where are you working?</legend>
+        <label><input type="radio" name="lrole" value="shop"><span><b>Shop</b>Ask the kitchen for pastries and ingredients</span></label>
+        <label><input type="radio" name="lrole" value="kitchen"><span><b>Kitchen</b>See what to make and hear an alert for new requests</span></label>
+        <label><input type="radio" name="lrole" value="admin"><span><b>Admin</b>People, order history and connection</span></label>
+      </fieldset>
+      <button type="button" class="big" data-act="login-demo">Open</button>
+    </div>
+    <div id="lCloud" hidden style="display:grid;gap:12px">
+      <label class="f">Username <input id="lUser" type="text" maxlength="40" autocomplete="username" autocapitalize="off" autocorrect="off"></label>
+      <label class="f">Password <input id="lPass" type="password" maxlength="60" autocomplete="current-password"></label>
+      <button type="button" class="big" data-act="login-cloud">Sign in</button>
+      <button type="button" class="link" data-act="setup-toggle" style="justify-self:start">First-time setup (owner only)</button>
+    </div>
+    <div id="lSetup" hidden style="display:grid;gap:12px">
+      <p style="margin:0">Create the first admin account. This only works while no admin exists yet.</p>
+      <label class="f">Your name <input id="sName" type="text" maxlength="30" placeholder="e.g. Mark"></label>
+      <label class="f">Username <input id="sUser" type="text" maxlength="40" autocapitalize="off" autocorrect="off" placeholder="e.g. mark"></label>
+      <label class="f">Password (at least 6 characters) <input id="sPass" type="password" maxlength="60" autocomplete="new-password"></label>
+      <button type="button" class="big" data-act="setup-admin">Create admin account</button>
+      <button type="button" class="link" data-act="setup-toggle" style="justify-self:start">Back to sign in</button>
+    </div>
   </section>
+
   <section class="panel" id="addPanel" hidden>
     <h2>Add an item</h2>
     <label class="f">Name <input id="aName" type="text" maxlength="60" placeholder="e.g. Hazelnut syrup"></label>
@@ -144,30 +182,53 @@ label.f{display:grid;gap:6px;font-weight:700}
     <label class="f">Counted in <input id="aUnit" type="text" maxlength="20" value="pcs" placeholder="pcs, kg, bottles, trays"></label>
     <div class="acts"><button type="button" class="ghost" data-act="add-close">Cancel</button><button type="button" class="big" data-act="add-save">Save item</button></div>
   </section>
-  <main id="app" aria-live="polite"></main>
-  <section class="panel" id="connPanel" hidden style="margin-top:28px">
+
+  <input type="file" id="fileIn" accept=".csv,text/csv,text/plain" hidden>
+  <section class="panel" id="ioPanel" hidden>
+    <h2 id="ioTitle">Result</h2>
+    <pre id="ioText" style="white-space:pre-wrap;margin:0;font-family:var(--body)"></pre>
+    <button type="button" class="ghost" data-act="io-close">Close</button>
+  </section>
+
+  <section class="panel" id="userPanel" hidden>
+    <h2>Add a person</h2>
+    <label class="f">Name <input id="uName" type="text" maxlength="30" placeholder="e.g. Mom"></label>
+    <label class="f">Username <input id="uUser" type="text" maxlength="40" autocapitalize="off" autocorrect="off" placeholder="e.g. mom"></label>
+    <label class="f">Password (at least 6 characters) <input id="uPass" type="text" maxlength="60" autocapitalize="off" autocorrect="off" placeholder="you choose it and tell them"></label>
+    <label class="f">Access <select id="uRole"><option value="shop">Shop</option><option value="kitchen">Kitchen</option><option value="admin">Admin</option></select></label>
+    <button type="button" class="big" data-act="adm-add">Add person</button>
+  </section>
+
+  <section class="panel" id="pwPanel" hidden>
+    <h2>Change my password</h2>
+    <label class="f">New password (at least 6 characters) <input id="pNew" type="password" maxlength="60" autocomplete="new-password"></label>
+    <div class="acts"><button type="button" class="ghost" data-act="pw-close">Cancel</button><button type="button" class="big" data-act="pw-save">Save password</button></div>
+  </section>
+
+  <section class="panel" id="connPanel" hidden>
     <h2>Connection</h2>
     <p class="count" id="cStatus" style="margin:0"></p>
     <label class="f">Database URL <input id="cDb" type="text" placeholder="https://your-project-default-rtdb.firebaseio.com" autocapitalize="off" autocorrect="off"></label>
-    <label class="f">Family code <input id="cCode" type="text" placeholder="a long private phrase" autocapitalize="off" autocorrect="off"></label>
+    <label class="f">Web API key <input id="cKey" type="text" placeholder="starts with AIza…" autocapitalize="off" autocorrect="off"></label>
     <div class="acts"><button type="button" class="ghost" data-act="conn-test">Test connection</button><button type="button" class="big" data-act="conn-save">Save and connect</button></div>
     <p id="cResult" style="margin:0;font-weight:700" aria-live="polite"></p>
-    <div class="acts"><button type="button" class="ghost" data-act="conn-demo">Use demo mode</button></div>
     <label class="f">Link to share with your family <input id="cLink" type="text" readonly></label>
     <div class="acts"><button type="button" class="ghost" data-act="conn-copy">Copy link</button><button type="button" class="ghost" data-act="conn-close">Close</button></div>
+    <button type="button" class="link" data-act="conn-demo" style="justify-self:start">Disconnect this device (demo mode)</button>
   </section>
-  <p style="margin-top:32px"><button type="button" class="chip" data-act="conn-open">Connection settings</button></p>
+
+  <main id="app" aria-live="polite"></main>
 </div>
 <div class="toast" id="toast" hidden></div>
-
 <script>
 (function(){
   var $ = function(s){ return document.querySelector(s); };
   var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
 
-  /* Optional: paste your Firebase Realtime Database URL and a private family code here
-     instead of using the share link. Leave empty to use the link from Connection settings. */
-  var CONFIG = { databaseUrl: '', familyCode: '' };
+  /* Optional: paste your Firebase Realtime Database URL and Web API key here instead of using
+     the share link from the Admin > Connection tab. Neither value is a password, but only
+     people with an approved account can read or change any data (see the database rules). */
+  var CONFIG = { databaseUrl: '', apiKey: '' };
 
   var STARTER = [
     ['Croissant','pastry','pcs'],['Banana bread','pastry','loaves'],['Cinnamon roll','pastry','pcs'],
@@ -177,18 +238,16 @@ label.f{display:grid;gap:6px;font-weight:700}
   ];
   var STATUS_LABEL = { requested:'Waiting', making:'Being made', sent:'On the way', received:'Received' };
 
-  var state = { items:[], requests:[], role:'kitchen', soundOn:false, showDone:false, editList:false, mode:'demo',
-                connected:false, syncErr:'', me:'', fresh:{}, cart:{}, urgency:'today', note:'', addOpen:false, connOpen:false };
+  var state = { items:[], requests:[], history:[], historyEnd:false, users:{}, user:null, role:'', adminTab:'people',
+                mode:'demo', connected:false, syncErr:'', me:'', soundOn:false, showDone:false, editList:false,
+                fresh:{}, cart:{}, urgency:'today', note:'', addOpen:false, connOpen:false, pwOpen:false, setupOpen:false, loginMsg:'', ioTitle:'', ioText:'', importKind:'' };
   var audio = null, busy = {}, backend = null;
-
-  try { var r = localStorage.getItem('rb-role'); if (r === 'shop' || r === 'kitchen') state.role = r; } catch(e){}
   try { state.soundOn = localStorage.getItem('rb-sound') === '1'; } catch(e){}
-  try { state.me = localStorage.getItem('rb-name') || ''; } catch(e){}
 
   /* ---------- helpers ---------- */
   function toast(msg){
     var t = $('#toast'); t.textContent = msg; t.hidden = false;
-    clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 3200);
+    clearTimeout(toast._t); toast._t = setTimeout(function(){ t.hidden = true; }, 3600);
   }
   function ago(ts){
     var m = Math.round((Date.now() - (ts || 0)) / 60000);
@@ -198,97 +257,201 @@ label.f{display:grid;gap:6px;font-weight:700}
     if (h < 24) return h + ' h ago';
     return Math.round(h / 24) + ' d ago';
   }
+  function when(ts){ try { return new Date(ts).toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); } catch(e){ return ''; } }
   function nameOf(by){ return !by ? 'Someone' : (by === state.me ? 'you' : by); }
   function slug(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'item'; }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   function byAge(a,b){ return (a.createdAt||0) - (b.createdAt||0); }
+  function lastName(){ try { return localStorage.getItem('rb-name') || ''; } catch(e){ return ''; } }
+  function roleLabel(r){ return r === 'admin' ? 'Admin' : (r === 'kitchen' ? 'Kitchen' : 'Shop'); }
+  function normUser(u){ return String(u || '').trim().toLowerCase().replace(/[^a-z0-9._-]/g, ''); }
+  function toEmail(u){ var t = String(u || '').trim().toLowerCase(); return t.indexOf('@') > 0 ? t : normUser(t) + '@restock.invalid'; }
+
+  function friendly(e){
+    var c = (e && e.code) || '', m = (e && e.message) || '';
+    var map = {
+      EMAIL_EXISTS:'That username is already taken.', INVALID_LOGIN_CREDENTIALS:'Wrong username or password.', INVALID_PASSWORD:'Wrong username or password.',
+      EMAIL_NOT_FOUND:'Wrong username or password.', USER_DISABLED:'This account has been disabled.', WEAK_PASSWORD:'The password needs at least 6 characters.',
+      OPERATION_NOT_ALLOWED:'Email/password sign-in is not turned on in Firebase (Authentication > Sign-in method).',
+      TOO_MANY_ATTEMPTS_TRY_LATER:'Too many attempts. Wait a few minutes and try again.', INVALID_EMAIL:'That username has characters that are not allowed.',
+      CREDENTIAL_TOO_OLD_LOGIN_AGAIN:'For safety, sign out and sign in again, then change the password.',
+      TOKEN_EXPIRED:'Your session expired. Please sign in again.', INVALID_REFRESH_TOKEN:'Your session expired. Please sign in again.'
+    };
+    if (map[c]) return map[c];
+    if (/API key/i.test(m)) return 'The Web API key was not accepted. Check it in Admin > Connection.';
+    if (/Failed to fetch|NetworkError/i.test(m)) return 'Could not reach the server. Check the internet connection.';
+    if (/permission denied|HTTP 401|HTTP 403/i.test(m)) return 'The database refused this. Your access may have been turned off, or the database rules are not published.';
+    return m || 'Something went wrong.';
+  }
 
   /* ---------- connection settings ---------- */
   function cfg(){
     var p = null; try { p = new URLSearchParams(location.search); } catch(e){}
-    var d = p && p.get('db'), k = p && p.get('code');
-    if (d && k) { try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, code:k })); } catch(e){} return { db:d, code:k }; }
-    try { var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null'); if (st && st.db && st.code) return st; } catch(e){}
-    if (CONFIG.databaseUrl && CONFIG.familyCode) return { db:CONFIG.databaseUrl, code:CONFIG.familyCode };
+    var d = p && p.get('db'), k = p && p.get('key');
+    if (d && k) { try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, key:k })); } catch(e){} return { db:d, key:k }; }
+    try { var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null'); if (st && st.db && st.key) return st; } catch(e){}
+    if (CONFIG.databaseUrl && CONFIG.apiKey) return { db:CONFIG.databaseUrl, key:CONFIG.apiKey };
     return null;
   }
   function pageBase(){ return location.href.split('#')[0].split('?')[0]; }
-  function shareLink(db, code){
-    if (!db || !code) return '';
-    return pageBase() + '?db=' + encodeURIComponent(db.trim()) + '&code=' + encodeURIComponent(code.trim());
+  function shareLink(db, key){
+    if (!db || !key) return '';
+    return pageBase() + '?db=' + encodeURIComponent(db.trim()) + '&key=' + encodeURIComponent(key.trim());
   }
-
   function normDb(raw){
     var t = String(raw || '').trim().replace(/^["']+|["']+$/g, '');
     if (!t) return { ok:false, msg:'Paste the database URL first.' };
     if (!/^https?:\/\//i.test(t)) t = 'https://' + t;
     var u; try { u = new URL(t); } catch(e){ return { ok:false, msg:'That does not look like a web address. Copy the database URL from the top of the Data tab in Firebase.' }; }
     var h = u.hostname.toLowerCase();
-    if (/(^|\.)console\.firebase\.google\.com$/.test(h) || /(^|\.)firebase\.google\.com$/.test(h))
+    if (/(^|\.)firebase\.google\.com$/.test(h))
       return { ok:false, msg:'That is the Firebase console address. You need the database URL instead: open Realtime Database, then the Data tab, and copy the address shown at the top. It ends in firebaseio.com or firebasedatabase.app.' };
     if (!/(\.firebaseio\.com|\.firebasedatabase\.app)$/.test(h) && !/^(localhost|127\.0\.0\.1)$/.test(h))
       return { ok:false, msg:'The database URL should end in firebaseio.com or firebasedatabase.app. Copy it from the top of the Data tab in Firebase Realtime Database.' };
     return { ok:true, url: u.origin, host: h };
   }
-  function boardRoot(c){
-    var n = normDb(c.db);
-    return (n.ok ? n.url : String(c.db).trim().replace(/\/+$/, '')) + '/boards/' + encodeURIComponent(String(c.code).trim().replace(/[.$#\[\]\/\s]/g, '-'));
-  }
-  async function testConn(dbRaw, codeRaw){
+  async function testConn(dbRaw, keyRaw){
     var n = normDb(dbRaw); if (!n.ok) return n.msg;
-    if (!String(codeRaw || '').trim()) return 'Choose a family code first.';
-    var res;
-    try { res = await fetch(boardRoot({ db: dbRaw, code: codeRaw }) + '.json'); }
-    catch(e){
-      var framed = false; try { framed = window.top !== window.self; } catch(x){ framed = true; }
+    var key = String(keyRaw || '').trim(); if (!key) return 'Paste the Web API key first.';
+    var framed = false; try { framed = window.top !== window.self; } catch(x){ framed = true; }
+    try {
+      var r1 = await fetch(n.url + '/ping.json');
+      if (r1.status === 404) return 'The database address answered "not found" (HTTP 404). Check the URL, and make sure the Realtime Database has been created.';
+    } catch(e){
       return 'Could not reach ' + n.host + '. Check the spelling of the URL (databases outside the US usually end in firebasedatabase.app), turn off any ad-blocker for this page, and make sure the page is opened directly in your browser' +
              (framed ? ' (it looks like it is being shown inside another app or preview, which can block outside connections).' : '.');
     }
-    if (res.status === 401 || res.status === 403) return 'Reached the database, but it refused access (HTTP ' + res.status + '). In Firebase open Realtime Database, then Rules, paste the rules from the setup steps and press Publish.';
-    if (res.status === 404) return 'The database address answered "not found" (HTTP 404). Check the URL, and make sure the Realtime Database has been created.';
-    if (!res.ok) return 'The database answered with an error (HTTP ' + res.status + ').';
-    return 'Connected \u2714 The database is reachable and this family code works.';
+    try {
+      var r2 = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + encodeURIComponent(key), {
+        method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ email:'connection-test@restock.invalid', password:'not-a-real-password', returnSecureToken:true }) });
+      var j = await r2.json().catch(function(){ return {}; });
+      var m = (j.error && (j.error.message || '')) || '';
+      if (/API key/i.test(m) || /API_KEY/i.test(m)) return 'The Web API key was not accepted. Copy it again from Firebase Project settings.';
+      if (/OPERATION_NOT_ALLOWED/.test(m)) return 'Email/password sign-in is not turned on. In Firebase open Authentication > Sign-in method and enable Email/Password.';
+      return 'Connected \u2714 The database and the sign-in service are both reachable.';
+    } catch(e){ return 'Could not reach the Google sign-in service. Check the internet connection or any ad-blocker.'; }
   }
 
-  /* ---------- storage backends ---------- */
-  function makeFirebase(c){
-    var root = boardRoot(c);
-    var cb = null, running = false, again = false;
+  /* ---------- cloud backend: Firebase sign-in + Realtime Database over REST ---------- */
+  function makeCloud(c){
+    var n = normDb(c.db), base = n.ok ? n.url : String(c.db).trim().replace(/\/+$/, ''), key = String(c.key).trim();
+    var S = { idToken:'', rt:'', uid:'', exp:0 };
+    var cb = null, active = false, running = false, again = false, es = null, esTimer = null, timers = [], lastPing = null;
+
+    function errOf(j, status){
+      var m = (j && j.error && (j.error.message || j.error)) || '';
+      var e = new Error(typeof m === 'string' && m ? m : ('HTTP ' + status));
+      e.code = String(m).split(' ')[0]; e.status = status; return e;
+    }
+    function saveSession(){ try { localStorage.setItem('rb-session', JSON.stringify({ uid:S.uid, rt:S.rt, db:base })); } catch(e){} }
+    function adopt(j){
+      S.idToken = j.idToken || j.id_token; S.rt = j.refreshToken || j.refresh_token; S.uid = j.localId || j.user_id || S.uid;
+      S.exp = Date.now() + (parseInt(j.expiresIn || j.expires_in, 10) || 3600) * 1000; saveSession();
+    }
+    async function idt(ep, body){
+      var r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:' + ep + '?key=' + encodeURIComponent(key),
+        { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+      var j = await r.json().catch(function(){ return {}; });
+      if (!r.ok) throw errOf(j, r.status);
+      return j;
+    }
+    async function refresh(){
+      var r = await fetch('https://securetoken.googleapis.com/v1/token?key=' + encodeURIComponent(key),
+        { method:'POST', headers:{ 'Content-Type':'application/x-www-form-urlencoded' }, body:'grant_type=refresh_token&refresh_token=' + encodeURIComponent(S.rt) });
+      var j = await r.json().catch(function(){ return {}; });
+      if (!r.ok) throw errOf(j, r.status);
+      adopt(j);
+    }
+    async function token(){ if (!S.idToken || Date.now() > S.exp - 120000) await refresh(); return S.idToken; }
+    async function url(path, q){ var t = await token(); return base + '/' + path + '.json?auth=' + encodeURIComponent(t) + (q ? '&' + q : ''); }
+    async function get(path, q){
+      var r = await fetch(await url(path, q));
+      if (!r.ok) { var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }
+    function ping(){ url('ping').then(function(u){ return fetch(u, { method:'PUT', body:String(Date.now()) }); }).catch(function(){}); }
+    var ORDER = 'orderBy=' + encodeURIComponent('"createdAt"');
+
     async function pull(){
+      if (!active) return;
       if (running) { again = true; return; }
       running = true;
       try {
-        var res = await fetch(root + '.json');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        var tree = await res.json();
-        if (cb) cb(tree || {}, null);
+        var res = await Promise.all([ get('items'), get('requests', ORDER + '&limitToLast=100') ]);
+        if (cb) cb({ items: res[0] || {}, requests: res[1] || {} }, null);
       } catch(e){ if (cb) cb(null, e); }
       running = false;
       if (again) { again = false; pull(); }
     }
+    function closeStream(){ if (es) { try { es.close(); } catch(e){} es = null; } }
+    async function openStream(){
+      closeStream(); clearTimeout(esTimer);
+      try {
+        es = new EventSource(await url('ping'));
+        es.addEventListener('put', function(){ pull(); });
+        es.addEventListener('auth_revoked', function(){ if (active) openStream(); });
+        es.onerror = function(){ closeStream(); clearTimeout(esTimer); esTimer = setTimeout(function(){ if (active) openStream(); }, 8000); };
+      } catch(e){}
+    }
+
     return {
+      uid: function(){ return S.uid; },
       refresh: pull,
       subscribe: function(f){
-        cb = f; pull();
-        try { var es = new EventSource(root + '.json'); es.addEventListener('put', pull); es.addEventListener('patch', pull); } catch(e){}
-        setInterval(pull, 15000);
+        cb = f; active = true; lastPing = null; pull(); openStream();
+        timers.push(setInterval(async function(){
+          try { var v = await get('ping'); if (String(v) !== String(lastPing)) { lastPing = v; pull(); } }
+          catch(e){ if (cb) cb(null, e); }
+        }, 20000));
+        timers.push(setInterval(pull, 300000));
+        timers.push(setInterval(openStream, 45 * 60 * 1000));
       },
+      stop: function(){ active = false; cb = null; timers.forEach(clearInterval); timers = []; closeStream(); clearTimeout(esTimer); },
+      signOut: function(){ S = { idToken:'', rt:'', uid:'', exp:0 }; try { localStorage.removeItem('rb-session'); } catch(e){} },
+      restore: async function(){
+        var s = null; try { s = JSON.parse(localStorage.getItem('rb-session') || 'null'); } catch(e){}
+        if (!s || s.db !== base || !s.rt) return false;
+        S.rt = s.rt; S.uid = s.uid; await refresh(); return true;
+      },
+      signIn: async function(user, pw){ adopt(await idt('signInWithPassword', { email: toEmail(user), password: pw, returnSecureToken: true })); return S.uid; },
+      signUpAdopt: async function(user, pw){ adopt(await idt('signUp', { email: toEmail(user), password: pw, returnSecureToken: true })); return S.uid; },
+      signUpNew: async function(user, pw){ var j = await idt('signUp', { email: toEmail(user), password: pw, returnSecureToken: true }); return j.localId; },
+      changePassword: async function(pw){ var t = await token(); adopt(await idt('update', { idToken: t, password: pw, returnSecureToken: true })); },
+      getProfile: function(id){ return get('users/' + id); },
+      getUsers: function(){ return get('users'); },
+      getHistory: function(before, n){ return get('requests', ORDER + '&limitToLast=' + n + (before ? '&endAt=' + (before - 1) : '')); },
       send: async function(method, path, data){
-        var res = await fetch(root + '/' + path + '.json', { method: method, body: data === undefined ? undefined : JSON.stringify(data) });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var r = await fetch(await url(path), { method: method, body: data === undefined ? undefined : JSON.stringify(data) });
+        if (!r.ok) { var e = new Error(r.status === 401 ? 'permission denied' : 'HTTP ' + r.status); e.status = r.status; throw e; }
+        if (/^(items|requests|users)/.test(path)) ping();
       }
     };
   }
+
+  /* ---------- demo backend: this device only ---------- */
   function makeLocal(){
-    var KEY = 'rb-demo-tree', mem = {}, cb = null;
+    var KEY = 'rb-demo-tree', mem = {}, cb = null, on = false, handler = null;
     function load(){ try { var v = localStorage.getItem(KEY); if (v) return JSON.parse(v) || {}; } catch(e){} return JSON.parse(JSON.stringify(mem)); }
     function save(t){ mem = t; try { localStorage.setItem(KEY, JSON.stringify(t)); } catch(e){} }
-    function pull(){ if (cb) cb(load(), null); }
+    function pull(){ if (on && cb) cb(load(), null); }
     return {
+      uid: function(){ return 'demo'; },
       refresh: pull,
       subscribe: function(f){
-        cb = f; pull();
-        window.addEventListener('storage', function(e){ if (e.key === KEY) pull(); });
+        cb = f; on = true; pull();
+        if (!handler) { handler = function(e){ if (e.key === KEY) pull(); }; window.addEventListener('storage', handler); }
+      },
+      stop: function(){ on = false; },
+      signOut: function(){},
+      getUsers: async function(){ return {}; },
+      getHistory: async function(before, n){
+        var rq = load().requests || {}, o = {};
+        Object.keys(rq).map(function(id){ return Object.assign({}, rq[id], { id: id }); })
+          .filter(function(r){ return !before || (r.createdAt || 0) < before; })
+          .sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); }).slice(0, n)
+          .forEach(function(r){ o[r.id] = r; });
+        return o;
       },
       send: async function(method, path, data){
         var t = load(), parts = path.split('/'), col = parts[0];
@@ -344,33 +507,102 @@ label.f{display:grid;gap:6px;font-weight:700}
     } catch(e){}
   }
   document.addEventListener('pointerdown', function(){
-    if (state.soundOn && audio && audio.state === 'suspended') { try { audio.resume(); } catch(e){} }
+    if (!state.soundOn) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      if (!audio) audio = new AC();
+      if (audio.state === 'suspended') audio.resume().then(function(){ paint(); });
+    } catch(e){}
   });
 
 
+
+  /* ---------- admin screens ---------- */
+  function peopleHTML(){
+    if (state.mode !== 'cloud') return '<div class="empty"><strong>People are managed in shared mode.</strong>Connect this device to your Firebase database, then sign in with an admin account.<div style="margin-top:14px"><button type="button" class="small solid" data-act="atab" data-tab="connection">Open the Connection tab</button></div></div>';
+    var ids = Object.keys(state.users).sort(function(a,b){ return String((state.users[a] || {}).name).localeCompare(String((state.users[b] || {}).name)); });
+    var h = '<div class="sec"><h2>People</h2><span class="count">' + ids.length + '</span><div class="tools"><button type="button" class="chip" data-act="adm-refresh">Refresh</button><button type="button" class="chip" data-act="export-users">Export CSV</button><button type="button" class="chip" data-act="import-users">Import CSV</button><button type="button" class="chip" data-act="template-users">Template</button></div></div>';
+    if (!ids.length) return h + '<div class="empty"><strong>No one yet.</strong>Add people with the form above.</div>';
+    return h + '<div class="rows">' + ids.map(function(id){
+      var p = state.users[id] || {}, me = id === state.user.uid, on = p.active === true;
+      return '<div class="row"><div class="nm">' + esc(p.name) + (me ? ' (you)' : '') + '<small>@' + esc(p.username || '') + ' \u00b7 added ' + esc(when(p.createdAt)) + '</small></div>' +
+        (on ? '' : '<span class="pill off">Off</span>') +
+        '<select class="sm" data-role-for="' + esc(id) + '" aria-label="Access for ' + esc(p.name) + '"' + (me ? ' disabled' : '') + '>' +
+        ['shop','kitchen','admin'].map(function(r){ return '<option value="' + r + '"' + (p.role === r ? ' selected' : '') + '>' + roleLabel(r) + '</option>'; }).join('') + '</select>' +
+        (me ? '' : '<button type="button" class="small' + (on ? '' : ' solid') + '" data-act="adm-active" data-id="' + esc(id) + '">' + (on ? 'Turn off' : 'Turn on') + '</button>') + '</div>';
+    }).join('') + '</div>';
+  }
+  function historyHTML(){
+    var h = '<div class="sec"><h2>Order history</h2><span class="count">' + state.history.length + ' shown</span><div class="tools"><button type="button" class="chip" data-act="hist-refresh">Refresh</button><button type="button" class="chip" data-act="export-history">Export CSV</button><button type="button" class="chip" data-act="import-history">Import CSV</button><button type="button" class="chip" data-act="template-history">Template</button></div></div>';
+    if (!state.history.length) return h + '<div class="empty"><strong>No orders yet.</strong>Requests sent from the Shop appear here, newest first.</div>';
+    h += '<div class="rows">' + state.history.map(function(r){
+      return '<div class="row"><div class="nm">' + esc(r.name) + ' \u00b7 ' + esc(r.qty) + ' ' + esc(r.unit || '') +
+        '<small>' + esc(r.by || 'Someone') + ' \u00b7 ' + (r.urgency === 'week' ? 'This week' : 'Today') + ' \u00b7 ' + esc(when(r.createdAt)) + (r.note ? ' \u00b7 \u201c' + esc(r.note) + '\u201d' : '') + '</small></div>' +
+        '<span class="pill ' + esc(r.status) + '">' + esc(STATUS_LABEL[r.status] || r.status) + '</span></div>';
+    }).join('') + '</div>';
+    if (!state.historyEnd) h += '<div style="margin-top:14px"><button type="button" class="small solid" data-act="hist-more">Load older</button></div>';
+    return h;
+  }
+  function adminHTML(){
+    if (state.adminTab === 'history') return historyHTML();
+    if (state.adminTab === 'connection') return '<p class="hint">Change the database or copy the link for your family in the Connection panel above.</p>';
+    return peopleHTML();
+  }
+  function tabsHTML(){
+    var key = state.role === 'admin' ? state.adminTab : state.role;
+    return [['people','People'],['history','History'],['connection','Connection'],['shop','Shop view'],['kitchen','Kitchen view']].map(function(t){
+      return '<button type="button" class="chip" data-act="atab" data-tab="' + t[0] + '" aria-pressed="' + (key === t[0]) + '">' + t[1] + '</button>';
+    }).join('');
+  }
+
   /* ---------- rendering ---------- */
   function paint(){
-    document.querySelectorAll('[data-role]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.role === state.role)); });
+    var u = state.user, inApp = !!u, admin = inApp && u.role === 'admin';
     var live = $('#live');
     if (state.mode === 'demo') live.innerHTML = '<span class="dot off"></span>Demo (this device only)';
-    else live.innerHTML = '<span class="dot' + (state.connected ? '' : ' off') + '"></span>' + (state.connected ? 'Live' : 'Offline');
+    else if (inApp) live.innerHTML = '<span class="dot' + (state.connected ? '' : ' off') + '"></span>' + (state.connected ? 'Live' : 'Offline');
+    else live.innerHTML = '';
 
     var n = $('#notice'); n.innerHTML = '';
     if (state.mode === 'demo') {
-      n.innerHTML = '<div class="notice"><strong>Demo mode.</strong> Requests stay on this device. To share with your family, open Connection settings at the bottom of the page.</div>';
-    } else if (state.syncErr) {
-      n.innerHTML = '<div class="notice"><strong>Can\u2019t reach the shared database</strong> (' + esc(state.syncErr) + '). Trying again. Open Connection settings and tap Test connection to see what is wrong.' +
-        '<div style="margin-top:10px"><button type="button" class="small solid" data-act="conn-open">Open Connection settings</button></div></div>';
+      n.innerHTML = '<div class="notice"><strong>Demo mode.</strong> Requests stay on this device. To share with your family, connect a shared database: sign in as Admin and open the Connection tab.</div>';
+    } else if (inApp && state.syncErr) {
+      n.innerHTML = '<div class="notice"><strong>Can\u2019t reach the shared database</strong> (' + esc(state.syncErr) + '). Trying again.' +
+        (admin ? '<div style="margin-top:10px"><button type="button" class="small solid" data-act="conn-open">Open connection settings</button></div>' : ' If this keeps happening, tell the admin.') + '</div>';
     }
-    $('#addPanel').hidden = !(state.role === 'shop' && state.addOpen);
-    $('#namePanel').hidden = !(state.role === 'shop' && !state.me);
-    $('#connPanel').hidden = !state.connOpen;
+    if (inApp && state.role === 'kitchen' && state.soundOn && !(audio && audio.state === 'running')) {
+      n.innerHTML += '<div class="notice"><strong>Tap anywhere on the screen once</strong> so new-request alerts can play.</div>';
+    }
+
+    $('#login').hidden = inApp;
+    $('#who').hidden = !inApp;
+    $('#adminTabs').hidden = !admin;
+    $('#addPanel').hidden = !(inApp && state.role === 'shop' && state.addOpen);
+    $('#ioPanel').hidden = !(admin && state.ioText);
+    $('#ioTitle').textContent = state.ioTitle || '';
+    $('#ioText').textContent = state.ioText || '';
+    $('#userPanel').hidden = !(admin && state.role === 'admin' && state.adminTab === 'people' && state.mode === 'cloud');
+    $('#pwPanel').hidden = !(inApp && state.pwOpen && state.mode === 'cloud');
+    $('#connPanel').hidden = !(state.connOpen || (admin && state.role === 'admin' && state.adminTab === 'connection'));
+
+    if (!inApp) {
+      $('#lMsg').textContent = state.loginMsg || '';
+      $('#lDemo').hidden = state.mode !== 'demo';
+      $('#lCloud').hidden = state.mode !== 'cloud' || state.setupOpen;
+      $('#lSetup').hidden = state.mode !== 'cloud' || !state.setupOpen;
+      document.title = 'Restock board';
+      $('#app').innerHTML = '';
+      return;
+    }
+    $('#whoName').textContent = u.name + ' \u00b7 ' + roleLabel(u.role);
+    $('#pwBtn').hidden = state.mode !== 'cloud';
+    if (admin) $('#adminTabs').innerHTML = tabsHTML();
 
     var pending = state.requests.filter(function(r){ return r.status === 'requested'; }).length;
     document.title = (state.role === 'kitchen' && pending ? '(' + pending + ') ' : '') + 'Restock board';
 
     var ae = document.activeElement, keep = (ae && ae.id === 'cNote') ? ae.selectionStart : null;
-    $('#app').innerHTML = state.role === 'kitchen' ? kitchenHTML() : shopHTML();
+    $('#app').innerHTML = state.role === 'kitchen' ? kitchenHTML() : (state.role === 'shop' ? shopHTML() : adminHTML());
     if (keep !== null) { var el = $('#cNote'); if (el) { el.focus(); try { el.setSelectionRange(keep, keep); } catch(x){} } }
   }
 
@@ -472,7 +704,7 @@ label.f{display:grid;gap:6px;font-weight:700}
     var its = tree.items || {}, rq = tree.requests || {};
     state.items = Object.keys(its).map(function(id){ return Object.assign({}, its[id], { id: id }); });
     state.requests = Object.keys(rq).map(function(id){ return Object.assign({}, rq[id], { id: id }); })
-      .sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); }).slice(0, 200);
+      .sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); }).slice(0, 100);
     Object.keys(state.cart).forEach(function(id){ if (!itemById(id)) delete state.cart[id]; });
     var incoming = false;
     state.requests.forEach(function(r){
@@ -486,12 +718,191 @@ label.f{display:grid;gap:6px;font-weight:700}
     if (incoming && state.role === 'kitchen' && state.soundOn) ring(5);
     paint();
   }
+  function startData(){
+    loaded = false; seen = {}; state.syncErr = ''; state.connected = false;
+    backend.subscribe(function(tree, err){
+      if (err) {
+        if (/^(INVALID_REFRESH_TOKEN|TOKEN_EXPIRED|USER_NOT_FOUND|USER_DISABLED)$/.test(err.code || '') || err.status === 401 || err.status === 403) {
+          doLogout('Your access was turned off or your session expired. Please sign in again.'); return;
+        }
+        state.connected = false; state.syncErr = err.message || 'error'; paint(); return;
+      }
+      state.connected = true; state.syncErr = '';
+      applyTree(tree);
+    });
+  }
+
+  /* ---------- sign-in / sign-out ---------- */
+  function enter(user){
+    if (backend) backend.stop();
+    state.user = user; state.me = user.name; state.role = user.role; state.adminTab = 'people';
+    state.cart = {}; state.note = ''; state.addOpen = false; state.editList = false; state.connOpen = false; state.pwOpen = false; state.setupOpen = false; state.loginMsg = '';
+    state.items = []; state.requests = []; state.history = []; state.historyEnd = false; state.users = {};
+    startData();
+    if (user.role === 'admin' && state.mode === 'cloud') loadUsers();
+    paint(); window.scrollTo(0, 0);
+  }
+  function afterSignInGesture(){
+    if (state.role === 'kitchen' && !state.soundOn) { state.soundOn = true; try { localStorage.setItem('rb-sound', '1'); } catch(x){} beep(); paint(); }
+  }
+  function acceptProfile(id, p){
+    if (!p) return 'This login has not been approved yet. Ask the admin to add you.';
+    if (p.active !== true) return 'Your access has been turned off. Ask the admin.';
+    enter({ uid:id, name:p.name, username:p.username, role:p.role });
+    return '';
+  }
+  function doLogout(msg){
+    if (backend) { backend.stop(); backend.signOut(); }
+    try { localStorage.removeItem('rb-user'); } catch(x){}
+    state.user = null; state.role = ''; state.me = ''; state.items = []; state.requests = []; state.history = []; state.users = {};
+    state.cart = {}; state.addOpen = false; state.editList = false; state.connOpen = false; state.pwOpen = false; state.setupOpen = false;
+    state.connected = false; state.syncErr = ''; state.loginMsg = msg || '';
+    $('#lName').value = lastName(); paint(); window.scrollTo(0, 0);
+  }
+  async function guarded(key, fn){
+    if (busy[key]) return; busy[key] = true;
+    try { await fn(); } catch(e){ if (state.user) toast(friendly(e)); else { state.loginMsg = friendly(e); paint(); } }
+    finally { delete busy[key]; }
+  }
+
+  /* ---------- admin data ---------- */
+  async function loadUsers(){ try { state.users = (await backend.getUsers()) || {}; } catch(e){ toast(friendly(e)); } paint(); }
+  async function loadHistory(reset){
+    var before = reset || !state.history.length ? 0 : state.history[state.history.length - 1].createdAt;
+    try {
+      var obj = (await backend.getHistory(before, 50)) || {};
+      var arr = Object.keys(obj).map(function(id){ return Object.assign({}, obj[id], { id: id }); }).sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); });
+      if (reset) state.history = arr;
+      else { var have = {}; state.history.forEach(function(r){ have[r.id] = 1; }); state.history = state.history.concat(arr.filter(function(r){ return !have[r.id]; })); }
+      state.historyEnd = arr.length < 50;
+    } catch(e){ toast(friendly(e)); }
+    paint();
+  }
+  function fillConn(){
+    var c = cfg(); $('#cDb').value = c ? c.db : ''; $('#cKey').value = c ? c.key : '';
+    $('#cLink').value = c ? shareLink(c.db, c.key) : ''; $('#cResult').textContent = '';
+    $('#cStatus').textContent = state.mode === 'demo' ? 'Currently in demo mode: data stays on this device.' : 'Connected to your Firebase project.';
+  }
+
+  /* ---------- CSV import / export ---------- */
+  function csvParse(text){
+    var rows = [], row = [], cur = '', q = false;
+    text = String(text).replace(/^\uFEFF/, '');
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ',') { row.push(cur); cur = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') i++; row.push(cur); cur = ''; if (row.length > 1 || row[0] !== '') rows.push(row); row = []; }
+      else cur += ch;
+    }
+    if (cur !== '' || row.length) { row.push(cur); if (row.length > 1 || row[0] !== '') rows.push(row); }
+    return rows;
+  }
+  function csvCell(v){
+    var s = String(v == null ? '' : v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function csvClean(s){ s = String(s == null ? '' : s).trim(); return /^'[=+\-@]/.test(s) ? s.slice(1) : s; }
+  function toCsv(rows){ return rows.map(function(r){ return r.map(csvCell).join(','); }).join('\r\n') + '\r\n'; }
+  function download(name, text){
+    var blob = new Blob(['\uFEFF' + text], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+  function iso(ts){ try { return ts ? new Date(ts).toISOString() : ''; } catch(e){ return ''; } }
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function showResult(title, lines){ state.ioTitle = title; state.ioText = lines.join('\n'); paint(); try { $('#ioPanel').scrollIntoView({ block: 'nearest' }); } catch(e){} }
+  function columns(head, names){
+    var idx = {}; names.forEach(function(n){ idx[n] = head.indexOf(n); }); return idx;
+  }
+
+  async function exportUsers(){
+    await loadUsers();
+    var rows = [['name', 'username', 'access', 'active', 'created_at']];
+    Object.keys(state.users).map(function(id){ return state.users[id]; })
+      .sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); })
+      .forEach(function(p){ rows.push([p.name, p.username, p.role, p.active === true ? 'yes' : 'no', iso(p.createdAt)]); });
+    download('restock-people-' + today() + '.csv', toCsv(rows));
+    toast('Exported ' + (rows.length - 1) + ' people (passwords are never exported).');
+  }
+  async function exportHistory(){
+    var all = [], before = 0;
+    for (var page = 0; page < 200; page++) {
+      var obj = (await backend.getHistory(before, 500)) || {};
+      var arr = Object.keys(obj).map(function(id){ return Object.assign({}, obj[id], { id: id }); }).sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); });
+      if (!arr.length) break;
+      all = all.concat(arr); before = arr[arr.length - 1].createdAt;
+      if (arr.length < 500) break;
+    }
+    var rows = [['created_at', 'item', 'quantity', 'unit', 'urgency', 'status', 'requested_by', 'note', 'updated_at']];
+    all.forEach(function(r){ rows.push([iso(r.createdAt), r.name, r.qty, r.unit, r.urgency, r.status, r.by, r.note, iso(r.updatedAt)]); });
+    download('restock-order-history-' + today() + '.csv', toCsv(rows));
+    toast('Exported ' + all.length + ' orders.');
+  }
+  async function importUsers(text){
+    var rows = csvParse(text);
+    if (rows.length < 2) return showResult('People import', ['The file has no data rows. Use the Template button to see the expected columns.']);
+    var head = rows[0].map(function(h){ return String(h).trim().toLowerCase(); });
+    var c = columns(head, ['name', 'username', 'password', 'access']);
+    if (c.name < 0 || c.username < 0 || c.password < 0) return showResult('People import', ['The first row must name the columns: name, username, password, access.']);
+    var data = rows.slice(1, 101), ok = 0, lines = [];
+    if (rows.length - 1 > 100) lines.push('Only the first 100 rows were used.');
+    for (var i = 0; i < data.length; i++) {
+      var r = data[i], nm = csvClean(r[c.name]), un = normUser(csvClean(r[c.username])), pw = String(r[c.password] == null ? '' : r[c.password]).trim();
+      var role = c.access >= 0 ? csvClean(r[c.access]).toLowerCase() : 'shop'; if (!role) role = 'shop';
+      var label = 'Row ' + (i + 2) + (nm ? ' (' + nm + ')' : '');
+      if (!nm || un.length < 3 || pw.length < 6 || ['shop','kitchen','admin'].indexOf(role) < 0) { lines.push(label + ': skipped. Needs a name, a username of 3+ letters or numbers, a password of 6+ characters, and access of shop, kitchen or admin.'); continue; }
+      try {
+        var nid = await backend.signUpNew(un, pw);
+        await backend.send('PUT', 'users/' + nid, { name: nm, username: un, role: role, active: true, createdAt: Date.now() });
+        ok++;
+      } catch(e){ lines.push(label + ': skipped. ' + friendly(e)); }
+    }
+    lines.unshift('Added ' + ok + ' of ' + data.length + ' people.' + (ok ? ' Tell each person their username and password, then delete the file, because it contains passwords.' : ''));
+    await loadUsers(); showResult('People import', lines);
+  }
+  async function importHistory(text){
+    var rows = csvParse(text);
+    if (rows.length < 2) return showResult('Order history import', ['The file has no data rows. Use the Template button to see the expected columns.']);
+    var head = rows[0].map(function(h){ return String(h).trim().toLowerCase(); });
+    var c = columns(head, ['created_at', 'item', 'quantity', 'unit', 'urgency', 'status', 'requested_by', 'note']);
+    if (c.item < 0) return showResult('Order history import', ['The first row must name the columns. At minimum: item. Use the Template button for the full list.']);
+    var data = rows.slice(1, 2001), batch = {}, count = 0, lines = [];
+    if (rows.length - 1 > 2000) lines.push('Only the first 2000 rows were used.');
+    function get(r, k){ return c[k] >= 0 ? csvClean(r[c[k]]) : ''; }
+    for (var i = 0; i < data.length; i++) {
+      var r = data[i], item = get(r, 'item');
+      if (!item) { lines.push('Row ' + (i + 2) + ': skipped, no item.'); continue; }
+      var created = get(r, 'created_at'), ts = created ? (/^\d{10,}$/.test(created) ? Number(created) : Date.parse(created)) : Date.now();
+      if (!isFinite(ts)) { lines.push('Row ' + (i + 2) + ' (' + item + '): skipped, the date "' + created + '" is not understood. Use a format like 2026-10-11 14:30.'); continue; }
+      var qty = parseInt(get(r, 'quantity'), 10); if (!isFinite(qty) || qty < 1) qty = 1; if (qty > 999) qty = 999;
+      var urg = get(r, 'urgency').toLowerCase() === 'week' || /week/i.test(get(r, 'urgency')) ? 'week' : 'today';
+      batch['imp' + uid() + i] = { itemId: '', name: item, unit: get(r, 'unit') || 'pcs', qty: qty, urgency: urg, note: get(r, 'note'),
+                                   status: 'received', by: get(r, 'requested_by') || 'Imported', createdAt: ts, updatedAt: ts };
+      count++;
+    }
+    var keys = Object.keys(batch);
+    try {
+      for (var k = 0; k < keys.length; k += 100) {
+        var part = {}; keys.slice(k, k + 100).forEach(function(id){ part[id] = batch[id]; });
+        await backend.send('PATCH', 'requests', part);
+      }
+    } catch(e){ lines.unshift('Stopped: ' + friendly(e)); return showResult('Order history import', lines); }
+    lines.unshift('Imported ' + count + ' orders into the history. They are saved as Received, so they do not appear in the kitchen queue.');
+    await loadHistory(true); showResult('Order history import', lines);
+  }
+  function template(kind){
+    if (kind === 'users') download('restock-people-template.csv', toCsv([['name', 'username', 'password', 'access'], ['Example Person', 'example', 'choose-a-password', 'shop']]));
+    else download('restock-history-template.csv', toCsv([['created_at', 'item', 'quantity', 'unit', 'urgency', 'status', 'requested_by', 'note'], ['2026-10-11 14:30', 'Croissant', '12', 'pcs', 'today', 'received', 'Mia', 'example row']]));
+  }
 
   /* ---------- actions ---------- */
   async function safe(key, fn, okMsg){
     if (busy[key]) return; busy[key] = true;
     try { await fn(); if (okMsg) toast(okMsg); backend.refresh(); }
-    catch(e){ toast('That did not save (' + ((e && e.message) || 'error') + '). Try again.'); backend.refresh(); }
+    catch(e){ toast(friendly(e)); backend.refresh(); }
     finally { delete busy[key]; }
   }
 
@@ -514,14 +925,29 @@ label.f{display:grid;gap:6px;font-weight:700}
       '<button type="button" class="big" data-act="send">Confirm and send ' + word + '</button></section>';
   }
   document.addEventListener('input', function(e){ if (e.target && e.target.id === 'cNote') state.note = e.target.value; });
-
   document.addEventListener('input', function(e){
-    if (e.target && (e.target.id === 'cDb' || e.target.id === 'cCode')) $('#cLink').value = shareLink($('#cDb').value, $('#cCode').value);
+    if (e.target && (e.target.id === 'cDb' || e.target.id === 'cKey')) $('#cLink').value = shareLink($('#cDb').value, $('#cKey').value);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' || !e.target || !e.target.id) return;
+    var map = { lName:'login-demo', lUser:'login-cloud', lPass:'login-cloud', sName:'setup-admin', sUser:'setup-admin', sPass:'setup-admin', pNew:'pw-save' };
+    var act = map[e.target.id]; if (!act) return;
+    e.preventDefault(); var btn = document.querySelector('[data-act="' + act + '"]'); if (btn) btn.click();
+  });
+  document.addEventListener('change', function(e){
+    if (e.target && e.target.id === 'fileIn') {
+      var f = e.target.files && e.target.files[0], kind = state.importKind; if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function(){ guarded('io', function(){ return kind === 'users' ? importUsers(String(rd.result)) : importHistory(String(rd.result)); }); };
+      rd.onerror = function(){ toast('That file could not be read.'); };
+      rd.readAsText(f); e.target.value = ''; return;
+    }
+    var t = e.target; if (!t || !t.dataset || !t.dataset.roleFor) return;
+    var id = t.dataset.roleFor, role = t.value;
+    safe('role' + id, async function(){ await backend.send('PATCH', 'users/' + id, { role: role }); await loadUsers(); }, 'Access updated');
   });
 
   document.addEventListener('click', function(e){
-    var rb = e.target.closest('[data-role]');
-    if (rb) { state.role = rb.dataset.role; try { localStorage.setItem('rb-role', state.role); } catch(x){} paint(); return; }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id;
 
@@ -539,56 +965,126 @@ label.f{display:grid;gap:6px;font-weight:700}
     if (a === 'urg') { state.urgency = b.dataset.v; paint(); return; }
     if (a === 'add-open') { state.addOpen = true; $('#aName').value = ''; $('#aUnit').value = 'pcs'; paint(); $('#addPanel').scrollIntoView({ block: 'nearest' }); $('#aName').focus(); return; }
     if (a === 'add-close') { state.addOpen = false; paint(); return; }
-    if (a === 'save-name') {
-      var nm0 = $('#nName').value.trim(); if (!nm0) { toast('Type your name first.'); return; }
-      state.me = nm0; try { localStorage.setItem('rb-name', nm0); } catch(x){} paint(); toast('Saved. You can send requests now.'); return;
+
+    /* sign-in */
+    if (a === 'login-demo') {
+      var ln = $('#lName').value.trim(); if (!ln) { state.loginMsg = 'Type your name first.'; paint(); return; }
+      var chk = document.querySelector('input[name=lrole]:checked'); if (!chk) { state.loginMsg = 'Choose Shop, Kitchen or Admin.'; paint(); return; }
+      try { localStorage.setItem('rb-name', ln); localStorage.setItem('rb-user', JSON.stringify({ name: ln, role: chk.value })); } catch(x){}
+      enter({ uid:'demo', name:ln, username:'', role:chk.value }); afterSignInGesture(); return;
     }
-    if (a === 'conn-open') {
-      var c = cfg(); $('#cDb').value = c ? c.db : ''; $('#cCode').value = c ? c.code : '';
-      $('#cLink').value = c ? shareLink(c.db, c.code) : '';
-      $('#cStatus').textContent = state.mode === 'demo' ? 'Currently in demo mode: data stays on this device.' : 'Connected to the shared database.';
-      state.connOpen = true; paint(); $('#connPanel').scrollIntoView({ block: 'nearest' }); return;
+    if (a === 'login-cloud') {
+      var un = $('#lUser').value.trim(), pw = $('#lPass').value;
+      if (!un || !pw) { state.loginMsg = 'Type your username and password.'; paint(); return; }
+      guarded('login', async function(){
+        var uidv = await backend.signIn(un, pw), p = await backend.getProfile(uidv), msg = acceptProfile(uidv, p);
+        if (msg) { backend.signOut(); state.loginMsg = msg; paint(); } else { $('#lPass').value = ''; afterSignInGesture(); }
+      });
+      return;
     }
-    if (a === 'conn-close') { state.connOpen = false; paint(); return; }
+    if (a === 'setup-toggle') { state.setupOpen = !state.setupOpen; state.loginMsg = ''; paint(); return; }
+    if (a === 'setup-admin') {
+      var sn = $('#sName').value.trim(), su = normUser($('#sUser').value), sp = $('#sPass').value;
+      if (!sn || su.length < 3 || sp.length < 6) { state.loginMsg = 'Fill in your name, a username of at least 3 letters or numbers, and a password of at least 6 characters.'; paint(); return; }
+      guarded('setup', async function(){
+        var nid;
+        try { nid = await backend.signUpAdopt(su, sp); } catch(e){ if (e.code === 'EMAIL_EXISTS') nid = await backend.signIn(su, sp); else throw e; }
+        try { await backend.send('PUT', 'users/' + nid, { name: sn, username: su, role: 'admin', active: true, createdAt: Date.now() }); }
+        catch(e){ backend.signOut(); state.loginMsg = 'An admin already exists, or the database rules are not published yet. Ask the existing admin to add you.'; paint(); return; }
+        var p = await backend.getProfile(nid); var msg = acceptProfile(nid, p); if (msg) { backend.signOut(); state.loginMsg = msg; paint(); }
+      });
+      return;
+    }
+    if (a === 'logout') { doLogout(''); return; }
+
+    /* password */
+    if (a === 'pw-open') { state.pwOpen = true; paint(); $('#pwPanel').scrollIntoView({ block: 'nearest' }); $('#pNew').focus(); return; }
+    if (a === 'pw-close') { state.pwOpen = false; $('#pNew').value = ''; paint(); return; }
+    if (a === 'pw-save') {
+      var np = $('#pNew').value; if (np.length < 6) { toast('The password needs at least 6 characters.'); return; }
+      safe('pw', async function(){ await backend.changePassword(np); $('#pNew').value = ''; state.pwOpen = false; paint(); }, 'Password changed');
+      return;
+    }
+
+    /* admin */
+    if (a === 'atab') {
+      var tab = b.dataset.tab; state.addOpen = false; state.editList = false; state.connOpen = false;
+      if (tab === 'shop' || tab === 'kitchen') state.role = tab;
+      else {
+        state.role = 'admin'; state.adminTab = tab;
+        if (tab === 'history') loadHistory(true); else if (tab === 'people') loadUsers(); else fillConn();
+      }
+      paint(); return;
+    }
+    if (a === 'export-users') { guarded('io', exportUsers); return; }
+    if (a === 'export-history') { guarded('io', exportHistory); return; }
+    if (a === 'template-users') { template('users'); return; }
+    if (a === 'template-history') { template('history'); return; }
+    if (a === 'import-users' || a === 'import-history') { state.importKind = a === 'import-users' ? 'users' : 'history'; $('#fileIn').click(); return; }
+    if (a === 'io-close') { state.ioText = ''; state.ioTitle = ''; paint(); return; }
+    if (a === 'adm-refresh') { loadUsers(); return; }
+    if (a === 'hist-refresh') { loadHistory(true); return; }
+    if (a === 'hist-more') { loadHistory(false); return; }
+    if (a === 'adm-add') {
+      var pn = $('#uName').value.trim(), pu = normUser($('#uUser').value), pp = $('#uPass').value, pr = $('#uRole').value;
+      if (!pn) { toast('Type the person\u2019s name.'); return; }
+      if (pu.length < 3) { toast('The username needs at least 3 letters or numbers.'); return; }
+      if (pp.length < 6) { toast('The password needs at least 6 characters.'); return; }
+      safe('adduser', async function(){
+        var nid = await backend.signUpNew(pu, pp);
+        await backend.send('PUT', 'users/' + nid, { name: pn, username: pu, role: pr, active: true, createdAt: Date.now() });
+        $('#uName').value = ''; $('#uUser').value = ''; $('#uPass').value = '';
+        await loadUsers();
+      }, 'Added ' + pn + '. Tell them their username and password.');
+      return;
+    }
+    if (a === 'adm-active') {
+      var cur = state.users[id] && state.users[id].active === true;
+      safe('act' + id, async function(){ await backend.send('PATCH', 'users/' + id, { active: !cur }); await loadUsers(); }, cur ? 'Access turned off' : 'Access turned on');
+      return;
+    }
+
+    /* connection */
+    if (a === 'conn-open') { fillConn(); state.connOpen = true; paint(); $('#connPanel').scrollIntoView({ block: 'nearest' }); return; }
+    if (a === 'conn-close') { state.connOpen = false; if (state.role === 'admin' && state.adminTab === 'connection') state.adminTab = 'people'; paint(); return; }
     if (a === 'conn-copy') {
-      var link = $('#cLink'); if (!link.value) { toast('Fill in the database URL and family code first.'); return; }
+      var link = $('#cLink'); if (!link.value) { toast('Fill in the database URL and Web API key first.'); return; }
       link.select();
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link.value).then(function(){ toast('Link copied'); }, function(){ toast('Press and hold the link to copy it.'); });
       else { try { document.execCommand('copy'); toast('Link copied'); } catch(x){ toast('Press and hold the link to copy it.'); } }
       return;
     }
-    if (a === 'conn-save') {
-      var d = $('#cDb').value.trim(), k = $('#cCode').value.trim();
-      var nd = normDb(d); if (!nd.ok) { $('#cResult').textContent = nd.msg; return; }
-      d = nd.url;
-      if (!k) { $('#cResult').textContent = 'Choose a family code.'; return; }
-      try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, code:k })); } catch(x){}
-      location.href = shareLink(d, k); return;
-    }
     if (a === 'conn-test') {
       var rs = $('#cResult'); rs.textContent = 'Testing\u2026';
-      testConn($('#cDb').value, $('#cCode').value).then(function(m){ rs.textContent = m; });
+      testConn($('#cDb').value, $('#cKey').value).then(function(m){ rs.textContent = m; });
       return;
     }
+    if (a === 'conn-save') {
+      var d = $('#cDb').value.trim(), k = $('#cKey').value.trim();
+      var nd = normDb(d); if (!nd.ok) { $('#cResult').textContent = nd.msg; return; }
+      if (!k) { $('#cResult').textContent = 'Paste the Web API key.'; return; }
+      try { localStorage.setItem('rb-cfg', JSON.stringify({ db: nd.url, key: k })); } catch(x){}
+      location.href = shareLink(nd.url, k); return;
+    }
     if (a === 'conn-demo') {
-      try { localStorage.removeItem('rb-cfg'); } catch(x){}
+      try { localStorage.removeItem('rb-cfg'); localStorage.removeItem('rb-session'); localStorage.removeItem('rb-user'); } catch(x){}
       location.href = pageBase(); return;
     }
 
+    /* shop + kitchen */
     if (a === 'send') {
-      if (!state.me) { toast('Add your name first.'); paint(); return; }
       var ids = Object.keys(state.cart).filter(function(i){ return itemById(i); });
       if (!ids.length) return;
       var urg = state.urgency, note = state.note.trim(), n = ids.length;
       safe('order', async function(){
-        for (var k = 0; k < ids.length; k++) {
-          var it = itemById(ids[k]), rid = uid() + k;
-          var rec = { itemId: it.id, name: it.name, kind: it.kind || 'ingredient', unit: it.unit || 'pcs', qty: state.cart[ids[k]],
-                      urgency: urg, note: note, status: 'requested', by: state.me, createdAt: Date.now() + k, updatedAt: Date.now() };
+        for (var k2 = 0; k2 < ids.length; k2++) {
+          var it = itemById(ids[k2]), rid = uid() + k2;
+          var rec = { itemId: it.id, name: it.name, kind: it.kind || 'ingredient', unit: it.unit || 'pcs', qty: state.cart[ids[k2]],
+                      urgency: urg, note: note, status: 'requested', by: state.me, createdAt: Date.now() + k2, updatedAt: Date.now() };
           seen[rid] = true;
           state.requests.unshift(Object.assign({}, rec, { id: rid }));
           await backend.send('PUT', 'requests/' + rid, rec);
-          delete state.cart[ids[k]];
+          delete state.cart[ids[k2]];
         }
         state.note = '';
       }, 'Sent ' + n + (n === 1 ? ' item' : ' items') + ' to the kitchen').then(function(){ paint(); });
@@ -615,18 +1111,31 @@ label.f{display:grid;gap:6px;font-weight:700}
     }
   });
 
-  function init(){
+  async function init(){
     var c = cfg();
-    backend = c ? makeFirebase(c) : makeLocal();
     state.mode = c ? 'cloud' : 'demo';
+    backend = c ? makeCloud(c) : makeLocal();
+    $('#lName').value = lastName();
+    if (!c) {
+      try {
+        var du = JSON.parse(localStorage.getItem('rb-user') || 'null');
+        if (du && du.name && ['shop','kitchen','admin'].indexOf(du.role) >= 0) enter({ uid:'demo', name:du.name, username:'', role:du.role });
+      } catch(e){}
+      paint(); return;
+    }
     paint();
-    backend.subscribe(function(tree, err){
-      if (err) { state.connected = false; state.syncErr = (err && err.message) || 'error'; paint(); return; }
-      state.connected = true; state.syncErr = '';
-      applyTree(tree);
-    });
+    try {
+      if (await backend.restore()) {
+        var p = await backend.getProfile(backend.uid()), msg = acceptProfile(backend.uid(), p);
+        if (msg) { backend.signOut(); state.loginMsg = msg; }
+      }
+    } catch(e){
+      if (/^(INVALID_REFRESH_TOKEN|TOKEN_EXPIRED|USER_NOT_FOUND|USER_DISABLED|MISSING_REFRESH_TOKEN)$/.test(e.code || '')) { backend.signOut(); state.loginMsg = 'Please sign in again.'; }
+      else state.loginMsg = 'Can\u2019t reach the database right now. Check the internet connection, then reload the page.';
+    }
+    paint();
   }
-  setInterval(paint, 60000);
+  setInterval(function(){ if (state.user) paint(); }, 60000);
   init();
 })();
 </script>
