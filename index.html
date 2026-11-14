@@ -205,6 +205,73 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 .tabs.sub .chip{border-color:var(--olive);color:var(--olive);min-height:38px;padding:3px 14px}
 .tabs.sub .chip[aria-pressed="true"]{background:var(--olive);color:var(--cream)}
 @media (prefers-reduced-motion:reduce){.ticket.fresh{animation:none;outline:4px solid var(--maroon)}}
+
+/* ---------- search & filter bar ---------- */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 16px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.filter-bar input[type=search],.filter-bar input[type=text]{flex:1 1 220px;min-height:42px;padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:#fff}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filter-chips .chip{min-height:36px;padding:4px 12px;font-size:14px}
+.stock-badge{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;margin-top:4px;width:fit-content}
+.stock-badge.ok{background:#dcfce7;color:#166534}
+.stock-badge.low{background:#fef3c7;color:#92400e}
+.stock-badge.crit{background:#fee2e2;color:#991b1b}
+
+/* ---------- inventory intelligence dashboard ---------- */
+.inv-header{background:linear-gradient(135deg,#422B1C,#645919);color:#fff;padding:24px 26px;border-radius:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.inv-header h2{font-family:var(--display);font-size:28px;color:#fff;margin:0}
+.inv-header small{opacity:.88;display:block;margin-top:4px;font-size:14px}
+.inv-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:20px}
+.inv-card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(66,43,28,.07)}
+.inv-kpi{color:#fff;border:0}
+.inv-kpi h4{font-size:14px;opacity:.92;margin:0;font-weight:700}
+.inv-kpi .value{font-size:38px;font-weight:800;margin-top:6px;line-height:1.1}
+.inv-kpi small{display:block;opacity:.85;font-size:13px;margin-top:4px}
+.inv-green{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.inv-yellow{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.inv-red{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.inv-blue{background:linear-gradient(135deg,#0ea5e9,#0284c7)}
+.inv-section{margin-top:20px}
+.inv-title{font-family:var(--display);font-size:22px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.inv-top-layout{display:grid;grid-template-columns:340px 1fr;gap:20px}
+@media(max-width:920px){.inv-top-layout{grid-template-columns:1fr}}
+.inv-donut-wrap{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.inv-donut{width:200px;height:200px;margin:8px auto;border-radius:50%;position:relative;display:grid;place-items:center}
+.inv-donut-inner{width:122px;height:122px;background:var(--card);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:20px;line-height:1.15;box-shadow:inset 0 2px 6px rgba(0,0,0,.06)}
+.inv-donut-inner small{font-size:12px;font-weight:700;color:var(--muted)}
+.inv-legend{margin-top:14px;text-align:left;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px;font-weight:700}
+.inv-alerts{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px}
+.inv-alert{border-left:6px solid #ef4444;background:#fff4f4;padding:16px;border-radius:14px;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.inv-alert.warn{border-left-color:#f59e0b;background:#fffbeb}
+.inv-alert h3{font-family:var(--body);font-weight:800;font-size:18px;margin:0}
+.inv-alert p{margin:2px 0;font-size:14px;color:var(--muted)}
+.inv-alert .days{font-size:24px;font-weight:800;color:#dc2626;margin-top:4px}
+.inv-alert.warn .days{color:#d97706}
+.inv-forecasts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.inv-forecast{padding:16px;border:2px solid var(--line);border-radius:14px;background:#fff}
+.inv-forecast h3{font-family:var(--body);font-weight:800;font-size:18px;margin:0 0 6px}
+.inv-forecast p{margin:2px 0;font-size:14px;color:var(--muted)}
+.inv-progress{height:12px;border-radius:999px;background:#e5e7eb;overflow:hidden;margin:12px 0}
+.inv-bar{height:100%;border-radius:999px;transition:width .3s}
+.inv-bar-green{background:#22c55e}
+.inv-bar-yellow{background:#f59e0b}
+.inv-bar-red{background:#ef4444}
+.inv-table-wrap{overflow-x:auto;margin-top:8px}
+.inv-table{width:100%;border-collapse:collapse;font-size:15px}
+.inv-table th{background:#e7d7b1;color:var(--brown);font-weight:800;padding:12px 14px;text-align:left;white-space:nowrap}
+.inv-table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+.inv-table tr:hover td{background:rgba(233,214,174,.25)}
+.inv-status{display:inline-block;padding:4px 11px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.inv-status-green{background:#dcfce7;color:#166534}
+.inv-status-yellow{background:#fef3c7;color:#92400e}
+.inv-status-red{background:#fee2e2;color:#991b1b}
+.inv-status-out{background:#3f1d1d;color:#fff}
+.inv-timeline-item{padding:13px 16px;border-left:5px solid var(--olive);background:#fff;margin-bottom:10px;border-radius:10px;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.inv-timeline-item.deduct{border-left-color:var(--maroon)}
+.inv-timeline-item.delivery{border-left-color:#16a34a}
+.inv-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.inv-metric{text-align:center;padding:22px 16px}
+.inv-metric .amount{font-size:30px;font-weight:800;margin-top:6px;color:var(--brown)}
+.row3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 </style>
 </head>
 <body>
@@ -339,25 +406,79 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
   <section class="panel" id="qrPanel" hidden>
     <h2>QR code for customers</h2>
-    <p class="hint">Show this on a screen at the counter. Each code can be opened for 10 minutes after it is made, and a new one appears automatically every 5 minutes. Customers who scan it can look at the menu for 10 minutes, then it closes. A printed code cannot expire, so use a screen.</p>
+    <p class="hint">This is your single permanent QR code for the menu. You can display it on a screen or print it for the counter and tables—it will not regenerate over and over again. When a customer scans this QR code, their menu session is active for 10 minutes and then automatically expires.</p>
     <div class="qr-stage" id="qrStage">
       <div id="qrBox" aria-live="polite"></div>
-      <div class="qr-count" id="qrCount">Making a code…</div>
+      <div class="qr-count" id="qrCount">Permanent QR code · 10-minute viewing limit per customer scan</div>
     </div>
     <label class="f">Customer link <input id="qrLink" type="text" readonly></label>
     <div class="acts">
       <button type="button" class="btn ghost" data-act="qr-copy">Copy link</button>
       <button type="button" class="btn ghost" data-act="qr-png">Download PNG</button>
       <button type="button" class="btn ghost" data-act="qr-full">Full screen</button>
-      <button type="button" class="btn" data-act="qr-new">New code now</button>
+      <button type="button" class="btn ghost" data-act="qr-new">Reset QR code</button>
     </div>
-    <label class="sw"><input id="qrAuto" type="checkbox" checked><span class="track"></span><span>Refresh automatically every 5 minutes</span></label>
+  </section>
+
+  <section class="panel" id="invItemPanel" hidden>
+    <h2 id="invItemTitle">Inventory Item</h2>
+    <div class="row2">
+      <label class="f">Item Name <input id="invName" type="text" maxlength="60" placeholder="e.g. Fresh Milk, Arabica Beans"></label>
+      <label class="f">Category <input id="invCat" type="text" maxlength="40" list="invCatList" placeholder="e.g. Raw Material, Pastry, Packaging"></label>
+    </div>
+    <datalist id="invCatList">
+      <option value="Raw Material"></option>
+      <option value="Pastry"></option>
+      <option value="Syrup &amp; Sauce"></option>
+      <option value="Packaging"></option>
+      <option value="Beverage Base"></option>
+    </datalist>
+    <div class="row3">
+      <label class="f">Restock Board Group <select id="invKind"><option value="ingredient">Ingredient / Supply</option><option value="pastry">Pastry / Bakery</option></select></label>
+      <label class="f">Unit <input id="invUnit" type="text" maxlength="20" placeholder="L, kg, pcs, bottles"></label>
+      <label class="f">Unit Cost (₱) <input id="invCost" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 110"></label>
+    </div>
+    <div class="row2">
+      <label class="f">Current Stock <input id="invStock" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 12"></label>
+      <label class="f">Minimum Stock (Par Level) <input id="invMin" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 8"></label>
+    </div>
+    <div class="row2">
+      <label class="f">Est. Daily Usage (per day) <input id="invUsage" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 2.5"></label>
+      <label class="f">Supplier Lead Time (days) <input id="invLead" type="number" inputmode="decimal" min="0" step="0.5" placeholder="e.g. 2"></label>
+    </div>
+    <div class="acts">
+      <button type="button" class="btn ghost" data-act="inv-item-cancel">Cancel</button>
+      <button type="button" class="btn danger" id="invDeleteBtn" data-act="inv-item-delete" hidden>Delete</button>
+      <button type="button" class="btn" data-act="inv-item-save">Save inventory item</button>
+    </div>
+  </section>
+
+  <section class="panel" id="invAdjustPanel" hidden>
+    <h2 id="invAdjTitle">Update Stock</h2>
+    <p class="hint" id="invAdjSub" style="font-weight:700"></p>
+    <div class="row2">
+      <label class="f">Action Type
+        <select id="invAdjMode">
+          <option value="set">Physical Count (Set exact stock)</option>
+          <option value="add">Receive Delivery (+ Add to stock)</option>
+          <option value="sub">Usage / Wastage (− Deduct from stock)</option>
+        </select>
+      </label>
+      <label class="f"><span id="invAdjQtyLbl">New Stock Count</span> <input id="invAdjQty" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0"></label>
+    </div>
+    <label class="f">Reason / Note (optional) <input id="invAdjNote" type="text" maxlength="100" placeholder="e.g. Physical Count, Supplier Delivery, Spoilage"></label>
+    <div class="acts">
+      <button type="button" class="btn ghost" data-act="inv-adj-cancel">Cancel</button>
+      <button type="button" class="btn" data-act="inv-adj-save">Apply update</button>
+    </div>
   </section>
 
   <div id="app" aria-live="polite"></div>
 </main>
 <div class="toast" id="toast" hidden></div>
 <input type="file" id="photoIn" accept="image/*" hidden>
+<input type="file" id="invFileIn" accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" async></script>
 <script>
 
 (function(){
@@ -367,29 +488,46 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   /* Optional: paste your Firebase Realtime Database URL and Web API key here instead of using
      the share link from the Admin > Connection tab. Neither value is a password, but only
      people with an approved account can read or change any data (see the database rules). */
-  var CONFIG = { databaseUrl: '', apiKey: '' };
+  var CONFIG = {
+    databaseUrl: 'https://tinto-coffee-app-default-rtdb.asia-southeast1.firebasedatabase.app',
+    apiKey: 'AIzaSyDfpuQxl1jGpd3eZDmV1pCpjWrYUKu_KfM'
+  };
 
   var STARTER = [
-    ['Croissant','pastry','pcs'],['Banana bread','pastry','loaves'],['Cinnamon roll','pastry','pcs'],
-    ['Chocolate chip cookie','pastry','pcs'],['Brownie','pastry','pcs'],['Blueberry muffin','pastry','pcs'],
-    ['Caramel syrup','ingredient','bottles'],['Vanilla syrup','ingredient','bottles'],['Chocolate sauce','ingredient','bottles'],
-    ['Cold brew concentrate','ingredient','liters'],['Pastry cream','ingredient','kg'],['Cookie dough','ingredient','kg']
+    ['Croissant','pastry','pcs',18,10,45,8,1,'Pastry'],
+    ['Banana bread','pastry','loaves',6,4,180,2,1,'Pastry'],
+    ['Cinnamon roll','pastry','pcs',14,8,55,5,1,'Pastry'],
+    ['Chocolate chip cookie','pastry','pcs',24,12,35,6,1,'Pastry'],
+    ['Brownie','pastry','pcs',16,8,45,4,1,'Pastry'],
+    ['Blueberry muffin','pastry','pcs',12,8,50,4,1,'Pastry'],
+    ['Fresh Milk','ingredient','L',4,10,95,6,1,'Raw Material'],
+    ['Arabica Beans','ingredient','kg',3,8,850,2.5,2,'Raw Material'],
+    ['16oz Cups','ingredient','pcs',20,100,4.5,45,3,'Packaging'],
+    ['Caramel syrup','ingredient','L',2,5,420,0.9,2,'Syrup & Sauce'],
+    ['Vanilla syrup','ingredient','bottles',6,4,420,0.6,2,'Syrup & Sauce'],
+    ['Chocolate sauce','ingredient','bottles',5,3,480,0.5,2,'Syrup & Sauce'],
+    ['Cold brew concentrate','ingredient','L',12,6,220,2,1,'Beverage Base'],
+    ['Pastry cream','ingredient','kg',5,3,310,0.8,1,'Raw Material'],
+    ['Cookie dough','ingredient','kg',6,3,290,1,1,'Raw Material']
   ];
   var STATUS_LABEL = { requested:'Waiting', making:'Being made', sent:'On the way', received:'Received' };
 
-  var SESSION_MS = 10 * 60 * 1000, ROTATE_MS = 5 * 60 * 1000, DEFAULT_CUR = '\u20B1';
+  var SESSION_MS = 10 * 60 * 1000, ROTATE_MS = 5 * 60 * 1000, DEFAULT_CUR = '\u20B1', STATIC_QR_DEFAULT = 'tintomenu01';
   var params; try { params = new URLSearchParams(location.search); } catch(e){ params = { get: function(){ return null; }, has: function(){ return false; } }; }
   var CUSTOMER = params.has('m'), TOKEN = String(params.get('m') || '').trim();
   if (CUSTOMER) {
     document.body.classList.add('customer');
-    ['#login','#connPanel','#pwPanel','#setPanel','#catPanel','#itemPanel','#qrPanel','#addPanel','#ioPanel','#userPanel','#adminTabs','#menuTabs','#who','#photoIn','#fileIn'].forEach(function(q){ var el = document.querySelector(q); if (el) el.remove(); });
+    ['#login','#connPanel','#pwPanel','#setPanel','#catPanel','#itemPanel','#qrPanel','#invItemPanel','#invAdjustPanel','#addPanel','#ioPanel','#userPanel','#adminTabs','#menuTabs','#who','#photoIn','#fileIn','#invFileIn'].forEach(function(q){ var el = document.querySelector(q); if (el) el.remove(); });
   }
   var state = { items:[], requests:[], history:[], historyEnd:false, users:{}, user:null, role:'', adminTab:'people', menuTab:'items',
                 mode:'demo', connected:false, syncErr:'', me:'', soundOn:false, showDone:false, editList:false,
                 fresh:{}, cart:{}, urgency:'today', note:'', addOpen:false, connOpen:false, pwOpen:false, setupOpen:false, loginMsg:'', ioTitle:'', ioText:'', importKind:'',
                 menu:{ categories:{}, items:{}, settings:{} }, menuLoaded:false, menuWatching:false, menuErr:'', itemEditing:'', catEditing:'',
-                photo:{ dataUrl:'', remove:false, had:false }, qr:null, qrBusy:false, gate:null, sess:null };
+                photo:{ dataUrl:'', remove:false, had:false }, qr:null, qrBusy:false, gate:null, sess:null,
+                shopSearch:'', shopFilter:'all', invSearch:'', invCatFilter:'all', invStatusFilter:'all',
+                invEditing:'', invAdjId:'', invLogs:[] };
   var audio = null, busy = {}, backend = null, imgCache = {}, imgPending = {};
+  var IN_ARTIFACT = !!(window.claude && window.claude.use);  /* published copy: no outside network */
   try { state.soundOn = localStorage.getItem('rb-sound') === '1'; } catch(e){}
 
   /* ---------- helpers ---------- */
@@ -445,10 +583,25 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
   /* ---------- connection settings ---------- */
   function cfg(){
+    if (IN_ARTIFACT) return null;
     var d = params.get('db'), k = params.get('key');
     if (d && k) { try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, key:k })); } catch(e){} return { db:d, key:k }; }
-    try { var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null'); if (st && st.db && st.key) return st; } catch(e){}
-    if (!CUSTOMER) { try { var tm = JSON.parse(localStorage.getItem('tm-cfg') || 'null'); if (tm && tm.db && tm.key) return tm; } catch(e){} }
+    try {
+      var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null');
+      if (st && st.db && st.key) {
+        if (/restocktrial01/i.test(st.db) && CONFIG.databaseUrl) { localStorage.removeItem('rb-cfg'); }
+        else return st;
+      }
+    } catch(e){}
+    if (!CUSTOMER) {
+      try {
+        var tm = JSON.parse(localStorage.getItem('tm-cfg') || 'null');
+        if (tm && tm.db && tm.key) {
+          if (/restocktrial01/i.test(tm.db) && CONFIG.databaseUrl) { localStorage.removeItem('tm-cfg'); }
+          else return tm;
+        }
+      } catch(e){}
+    }
     if (CONFIG.databaseUrl && CONFIG.apiKey) return { db:CONFIG.databaseUrl, key:CONFIG.apiKey };
     return null;
   }
@@ -699,7 +852,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
   /* ---------- admin screens ---------- */
   function peopleHTML(){
-    if (state.mode !== 'cloud') return '<div class="empty"><strong>People are managed in shared mode.</strong>Connect this device to your Firebase database, then sign in with an admin account.<div style="margin-top:14px"><button type="button" class="small solid" data-act="atab" data-tab="connection">Open the Connection tab</button></div></div>';
+    if (state.mode !== 'cloud') return '<div class="empty"><strong>People are managed in shared mode.</strong>' + (IN_ARTIFACT ? 'The shared version, with real accounts, runs from your own website.' : 'Connect this device to your Firebase database, then sign in with an admin account.<div style="margin-top:14px"><button type="button" class="small solid" data-act="atab" data-tab="connection">Open the Connection tab</button></div>') + '</div>';
     var ids = Object.keys(state.users).sort(function(a,b){ return String((state.users[a] || {}).name).localeCompare(String((state.users[b] || {}).name)); });
     var h = '<div class="sec"><h2>People</h2><span class="count">' + ids.length + '</span><div class="tools"><button type="button" class="chip" data-act="adm-refresh">Refresh</button><button type="button" class="chip" data-act="export-users">Export CSV</button><button type="button" class="chip" data-act="import-users">Import CSV</button><button type="button" class="chip" data-act="template-users">Template</button></div></div>';
     if (!ids.length) return h + '<div class="empty"><strong>No one yet.</strong>Add people with the form above.</div>';
@@ -730,7 +883,256 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (state.menuTab === 'preview') return '<p class="hint" style="text-align:center;margin-bottom:10px">Preview: this is what customers see.</p><div class="preview-frame">' + menuHTML() + '</div>';
     return '';
   }
+
+  /* ---------- inventory intelligence calculations & view ---------- */
+  function fmtNum(n){
+    var v = Number(n); if (!isFinite(v)) return '0';
+    return Math.round(v * 100) / 100 + '';
+  }
+  function fmtCompactPhp(n, cur){
+    var v = Number(n) || 0;
+    if (v >= 10000) return (cur || DEFAULT_CUR) + (v / 1000).toFixed(v >= 100000 ? 0 : 1).replace(/\.0$/, '') + 'k';
+    return fmtPrice(Math.round(v), cur || DEFAULT_CUR);
+  }
+  function invMetricsOf(it){
+    var hasStock = it.stock !== undefined && it.stock !== null && it.stock !== '';
+    var stock = hasStock ? Math.max(0, Number(it.stock) || 0) : 0;
+    var minStock = Math.max(0, Number(it.minStock != null ? it.minStock : (it.kind === 'pastry' ? 8 : 5)) || 0);
+    var cost = Math.max(0, Number(it.cost || 0) || 0);
+    var leadTime = Math.max(0.5, Number(it.leadTime != null ? it.leadTime : 1) || 1);
+    var usage = Number(it.dailyUsage || 0);
+    if (!usage || usage <= 0) {
+      var cut = Date.now() - 7 * 86400000, used7 = 0;
+      state.requests.forEach(function(r){
+        if ((r.status === 'sent' || r.status === 'received') && (r.createdAt || 0) >= cut && (r.itemId === it.id || String(r.name).toLowerCase() === String(it.name).toLowerCase())) {
+          used7 += Number(r.qty) || 0;
+        }
+      });
+      usage = used7 > 0 ? Math.round((used7 / 7) * 10) / 10 : Math.max(0.5, Math.round((minStock / 3) * 10) / 10);
+    }
+    var daysLeft = usage > 0 ? Math.round((stock / usage) * 10) / 10 : (stock > 0 ? 99 : 0);
+    var status = 'healthy', statusLabel = 'Healthy', badgeCls = 'inv-status-green';
+    if (stock <= 0) { status = 'out'; statusLabel = 'Out of Stock'; badgeCls = 'inv-status-out'; }
+    else if (stock <= minStock * 0.5 || daysLeft <= 1.5) { status = 'critical'; statusLabel = 'Critical'; badgeCls = 'inv-status-red'; }
+    else if (stock <= minStock || daysLeft <= 3) { status = 'low'; statusLabel = 'Low'; badgeCls = 'inv-status-yellow'; }
+    var cat = it.category || (it.kind === 'pastry' ? 'Pastry' : 'Raw Material');
+    var needsOrder = status !== 'healthy' || daysLeft <= leadTime + 1;
+    var targetStock = Math.max(minStock * 2, Math.ceil(usage * (leadTime + 5)), minStock + 5);
+    var suggestedOrder = needsOrder ? Math.max(1, Math.ceil(targetStock - stock)) : 0;
+    var priority = (status === 'out' || status === 'critical' || daysLeft <= leadTime) ? 'Urgent' : 'Soon';
+    var stockoutDate = '';
+    if (daysLeft < 60) {
+      var d = new Date(Date.now() + Math.max(0, daysLeft) * 86400000);
+      try { stockoutDate = d.toLocaleDateString('en-US', { month:'short', day:'numeric' }); } catch(e){ stockoutDate = ''; }
+    }
+    return {
+      id: it.id, name: it.name || 'Item', unit: it.unit || 'pcs', kind: it.kind || 'ingredient', category: cat,
+      hasStock: hasStock, stock: stock, minStock: minStock, cost: cost, value: stock * cost,
+      dailyUsage: usage, leadTime: leadTime, daysLeft: daysLeft,
+      status: status, statusLabel: statusLabel, badgeCls: badgeCls,
+      needsOrder: needsOrder, suggestedOrder: suggestedOrder, orderCost: suggestedOrder * cost, priority: priority,
+      stockoutDate: stockoutDate, updatedAt: it.updatedAt || 0, updatedBy: it.updatedBy || ''
+    };
+  }
+
+  function inventoryHTML(){
+    var cur = settings().cur || DEFAULT_CUR;
+    var list = state.items.map(invMetricsOf).sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
+    var total = list.length;
+    var healthy = list.filter(function(x){ return x.status === 'healthy'; });
+    var low = list.filter(function(x){ return x.status === 'low'; });
+    var crit = list.filter(function(x){ return x.status === 'critical'; });
+    var out = list.filter(function(x){ return x.status === 'out'; });
+    var totalVal = list.reduce(function(s, x){ return s + x.value; }, 0);
+    var reorders = list.filter(function(x){ return x.needsOrder; }).sort(function(a,b){ return a.daysLeft - b.daysLeft; });
+    var lowImpact = reorders.reduce(function(s, x){ return s + x.orderCost; }, 0);
+    var stockouts7d = list.filter(function(x){ return x.daysLeft <= 7; }).length;
+    var latestTs = list.reduce(function(m, x){ return Math.max(m, x.updatedAt || 0); }, 0);
+    if (state.invLogs.length && state.invLogs[0].ts > latestTs) latestTs = state.invLogs[0].ts;
+
+    var h = '<div class="inv-header"><div><h2>\u2615 Tin\u2019to Inventory Intelligence</h2>' +
+      '<small>Owner Dashboard \u2022 Inventory Forecasting \u2022 Restock Planning</small>' +
+      '<small style="margin-top:6px"><strong>Last Updated:</strong> ' + (latestTs ? esc(when(latestTs)) : 'Today') + '</small></div>' +
+      '<div class="acts" style="flex-wrap:wrap">' +
+      '<button type="button" class="chip" style="border-color:var(--cream);color:var(--cream)" data-act="inv-item-new">+ Add Item</button>' +
+      '<button type="button" class="chip" style="border-color:var(--cream);color:var(--cream)" data-act="inv-import">\ud83d\udce5 Import Excel / CSV</button>' +
+      '<button type="button" class="chip" style="border-color:var(--cream);color:var(--cream)" data-act="inv-export-xlsx">\ud83d\udce4 Export Excel</button>' +
+      '<button type="button" class="chip" style="border-color:var(--cream);color:var(--cream)" data-act="inv-export-csv">Export CSV</button>' +
+      '<button type="button" class="chip" style="border-color:var(--cream);color:var(--cream)" data-act="inv-template">Template</button>' +
+      '</div></div>';
+
+    if (!total) {
+      h += '<div class="empty"><strong>No inventory items yet.</strong>Import your coffee shop Excel (.xlsx) or CSV sheet, or load the Tin\u2019to starter inventory to see live forecasting and alerts.' +
+        '<div class="acts" style="justify-content:center;margin-top:14px">' +
+        '<button type="button" class="btn" data-act="inv-import">Import Excel / CSV</button>' +
+        '<button type="button" class="btn olive" data-act="seed">Load Tin\u2019to Sample Inventory</button></div></div>';
+      return h;
+    }
+
+    /* KPI cards */
+    h += '<div class="inv-kpis">' +
+      '<div class="inv-card inv-kpi inv-green"><h4>Healthy Items</h4><div class="value">' + healthy.length + '</div><small>Above par level</small></div>' +
+      '<div class="inv-card inv-kpi inv-yellow"><h4>Low Stock</h4><div class="value">' + low.length + '</div><small>At or near minimum</small></div>' +
+      '<div class="inv-card inv-kpi inv-red"><h4>Critical / Out</h4><div class="value">' + (crit.length + out.length) + '</div><small>' + crit.length + ' critical \u00b7 ' + out.length + ' out of stock</small></div>' +
+      '<div class="inv-card inv-kpi inv-blue"><h4>Inventory Value</h4><div class="value">' + esc(fmtCompactPhp(totalVal, cur)) + '</div><small>' + esc(fmtPrice(totalVal, cur)) + ' total on hand</small></div>' +
+      '</div>';
+
+    /* Donut chart + Critical Restock Alerts */
+    var pH = Math.round((healthy.length / total) * 100), pL = Math.round((low.length / total) * 100), pC = Math.round((crit.length / total) * 100);
+    var s1 = pH, s2 = Math.min(100, s1 + pL), s3 = Math.min(100, s2 + pC);
+    var grad = 'conic-gradient(#22c55e 0 ' + s1 + '%, #f59e0b ' + s1 + '% ' + s2 + '%, #ef4444 ' + s2 + '% ' + s3 + '%, #7f1d1d ' + s3 + '% 100%)';
+    var alertItems = list.filter(function(x){ return x.status !== 'healthy'; }).sort(function(a,b){ return a.daysLeft - b.daysLeft; }).slice(0, 6);
+
+    h += '<div class="inv-section inv-top-layout">' +
+      '<div class="inv-card inv-donut-wrap"><h3 class="inv-title" style="justify-content:center">Inventory Health</h3>' +
+      '<div class="inv-donut" style="background:' + grad + '"><div class="inv-donut-inner"><span>' + total + ' Items</span><small>Tracked</small></div></div>' +
+      '<div class="inv-legend">' +
+      '<div>\ud83d\udfe2 Healthy (' + healthy.length + ')</div>' +
+      '<div>\ud83d\udfe1 Low (' + low.length + ')</div>' +
+      '<div>\ud83d\udd34 Critical (' + crit.length + ')</div>' +
+      '<div>\u26ab Out of Stock (' + out.length + ')</div>' +
+      '</div></div>' +
+      '<div class="inv-card"><div class="inv-title"><span>\ud83d\udea8 Critical Restock Alerts</span><span class="count">' + alertItems.length + ' alert' + (alertItems.length === 1 ? '' : 's') + '</span></div>';
+
+    if (!alertItems.length) {
+      h += '<div class="empty" style="padding:20px"><strong>All items are healthy!</strong>No critical or low-stock items right now.</div>';
+    } else {
+      h += '<div class="inv-alerts">' + alertItems.map(function(x){
+        var isWarn = x.status === 'low';
+        return '<div class="inv-alert' + (isWarn ? ' warn' : '') + '"><div>' +
+          '<h3>' + esc(x.name) + '</h3>' +
+          '<p>Current Stock: <strong>' + fmtNum(x.stock) + ' ' + esc(x.unit) + '</strong></p>' +
+          '<p>Minimum Stock: ' + fmtNum(x.minStock) + ' ' + esc(x.unit) + '</p>' +
+          '<div class="days">' + (x.stock <= 0 ? 'Out of Stock' : fmtNum(x.daysLeft) + ' Days Left') + '</div></div>' +
+          '<div class="acts" style="margin-top:6px">' +
+          '<button type="button" class="small solid" data-act="inv-adj-open" data-id="' + esc(x.id) + '" data-mode="add">+ Receive</button>' +
+          '<button type="button" class="small" data-act="inv-adj-open" data-id="' + esc(x.id) + '" data-mode="set">Count</button>' +
+          '</div></div>';
+      }).join('') + '</div>';
+    }
+    h += '</div></div>';
+
+    /* Inventory Forecast */
+    var forecastItems = list.slice().sort(function(a,b){ return a.daysLeft - b.daysLeft; }).slice(0, 6);
+    h += '<div class="inv-section"><div class="inv-card"><div class="inv-title"><span>\ud83d\udcc8 Inventory Forecast</span><small class="hint" style="font-size:14px">Based on daily consumption &amp; restock velocity</small></div>' +
+      '<div class="inv-forecasts">' + forecastItems.map(function(x){
+        var pct = Math.max(4, Math.min(100, Math.round((x.stock / Math.max(1, x.minStock * 2)) * 100)));
+        var barCls = x.status === 'healthy' ? 'inv-bar-green' : (x.status === 'low' ? 'inv-bar-yellow' : 'inv-bar-red');
+        return '<div class="inv-forecast"><h3>' + esc(x.name) + '</h3>' +
+          '<p>Current: <strong>' + fmtNum(x.stock) + ' ' + esc(x.unit) + '</strong></p>' +
+          '<p>Usage: ' + fmtNum(x.dailyUsage) + ' ' + esc(x.unit) + '/day</p>' +
+          '<div class="inv-progress"><div class="inv-bar ' + barCls + '" style="width:' + pct + '%"></div></div>' +
+          '<strong>' + (x.stock <= 0 ? 'Depleted (Out of Stock)' : (x.stockoutDate ? 'Stockout ' + esc(x.stockoutDate) + ' (' + fmtNum(x.daysLeft) + 'd)' : 'Safe (' + fmtNum(x.daysLeft) + '+ days)')) + '</strong></div>';
+      }).join('') + '</div></div></div>';
+
+    /* Reorder Recommendations */
+    h += '<div class="inv-section"><div class="inv-card"><div class="inv-title"><span>\ud83d\uded2 Reorder Recommendations</span><span class="count">' + reorders.length + ' item' + (reorders.length === 1 ? '' : 's') + '</span></div>';
+    if (!reorders.length) {
+      h += '<p class="hint">No items need reordering right now.</p>';
+    } else {
+      h += '<div class="inv-table-wrap"><table class="inv-table"><thead><tr>' +
+        '<th>Item</th><th>Current</th><th>Min Stock</th><th>Supplier Lead Time</th><th>Suggested Order</th><th>Est. Cost</th><th>Priority</th><th>Action</th>' +
+        '</tr></thead><tbody>' + reorders.map(function(x){
+          var pCls = x.priority === 'Urgent' ? 'inv-status-red' : 'inv-status-yellow';
+          return '<tr><td><strong>' + esc(x.name) + '</strong><br><small class="hint">' + esc(x.category) + '</small></td>' +
+            '<td>' + fmtNum(x.stock) + ' ' + esc(x.unit) + '</td>' +
+            '<td>' + fmtNum(x.minStock) + ' ' + esc(x.unit) + '</td>' +
+            '<td>' + fmtNum(x.leadTime) + (x.leadTime === 1 ? ' Day' : ' Days') + '</td>' +
+            '<td><strong>' + fmtNum(x.suggestedOrder) + ' ' + esc(x.unit) + '</strong></td>' +
+            '<td>' + (x.cost > 0 ? esc(fmtPrice(x.orderCost, cur)) : '\u2014') + '</td>' +
+            '<td><span class="inv-status ' + pCls + '">' + esc(x.priority) + '</span></td>' +
+            '<td><button type="button" class="small solid" data-act="inv-receive-sug" data-id="' + esc(x.id) + '" data-qty="' + x.suggestedOrder + '">+ Receive ' + fmtNum(x.suggestedOrder) + ' ' + esc(x.unit) + '</button></td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    h += '</div></div>';
+
+    /* Inventory Health Table with Search & Category/Status Filters */
+    var allCats = [];
+    list.forEach(function(x){ if (allCats.indexOf(x.category) < 0) allCats.push(x.category); });
+    allCats.sort();
+    var q = state.invSearch.trim().toLowerCase();
+    var filtered = list.filter(function(x){
+      if (state.invCatFilter !== 'all' && x.category !== state.invCatFilter) return false;
+      if (state.invStatusFilter !== 'all' && x.status !== state.invStatusFilter) return false;
+      if (q && String(x.name).toLowerCase().indexOf(q) < 0 && String(x.category).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    });
+
+    h += '<div class="inv-section"><div class="inv-card"><div class="inv-title"><span>\ud83d\udce6 Inventory Health Table</span>' +
+      '<div class="acts"><button type="button" class="chip" data-act="inv-item-new">+ Add Item</button></div></div>' +
+      '<div class="filter-bar">' +
+      '<input type="search" id="invSearch" placeholder="Search item or category\u2026" value="' + esc(state.invSearch) + '" aria-label="Search inventory">' +
+      '<select class="sm" id="invCatSelect" aria-label="Filter by category"><option value="all"' + (state.invCatFilter === 'all' ? ' selected' : '') + '>All Categories</option>' +
+      allCats.map(function(c){ return '<option value="' + esc(c) + '"' + (state.invCatFilter === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>' +
+      '<div class="filter-chips">' +
+      [['all','All (' + total + ')'],['healthy','Healthy (' + healthy.length + ')'],['low','Low (' + low.length + ')'],['critical','Critical (' + crit.length + ')'],['out','Out (' + out.length + ')']].map(function(st){
+        return '<button type="button" class="chip" data-act="inv-st-filter" data-v="' + st[0] + '" aria-pressed="' + (state.invStatusFilter === st[0]) + '">' + st[1] + '</button>';
+      }).join('') + '</div></div>';
+
+    if (!filtered.length) {
+      h += '<div class="empty" style="padding:20px"><strong>No matching items.</strong>Try clearing your search or category filter.</div>';
+    } else {
+      h += '<div class="inv-table-wrap"><table class="inv-table"><thead><tr>' +
+        '<th>Item</th><th>Category</th><th>Current</th><th>Minimum</th><th>Unit Cost</th><th>Value</th><th>Status</th><th>Days Left</th><th>Actions</th>' +
+        '</tr></thead><tbody>' + filtered.map(function(x){
+          return '<tr><td><strong>' + esc(x.name) + '</strong></td>' +
+            '<td>' + esc(x.category) + '</td>' +
+            '<td><strong>' + fmtNum(x.stock) + ' ' + esc(x.unit) + '</strong></td>' +
+            '<td>' + fmtNum(x.minStock) + ' ' + esc(x.unit) + '</td>' +
+            '<td>' + (x.cost > 0 ? esc(fmtPrice(x.cost, cur)) : '\u2014') + '</td>' +
+            '<td>' + (x.value > 0 ? esc(fmtPrice(x.value, cur)) : '\u2014') + '</td>' +
+            '<td><span class="inv-status ' + x.badgeCls + '">' + esc(x.statusLabel) + '</span></td>' +
+            '<td>' + (x.stock <= 0 ? '0' : fmtNum(x.daysLeft)) + '</td>' +
+            '<td><div class="mini" style="margin:0">' +
+            '<button type="button" data-act="inv-adj-open" data-id="' + esc(x.id) + '" data-mode="set">Count / Adjust</button>' +
+            '<button type="button" data-act="inv-adj-open" data-id="' + esc(x.id) + '" data-mode="add">+ Delivery</button>' +
+            '<button type="button" data-act="inv-item-edit" data-id="' + esc(x.id) + '">Edit</button>' +
+            '</div></td></tr>';
+        }).join('') + '</tbody></table></div>';
+    }
+    h += '</div></div>';
+
+    /* Inventory Activity Timeline */
+    var timeline = state.invLogs.slice(0, 12);
+    if (timeline.length < 6) {
+      var seenReq = {};
+      timeline.forEach(function(l){ if (l.reqId) seenReq[l.reqId] = 1; });
+      state.requests.filter(function(r){ return (r.status === 'sent' || r.status === 'received') && !seenReq[r.id]; }).slice(0, 8).forEach(function(r){
+        timeline.push({
+          ts: r.updatedAt || r.createdAt || 0,
+          kind: 'deduct',
+          title: r.name + ' restock fulfilled: \u2212' + r.qty + ' ' + (r.unit || 'pcs'),
+          meta: 'Restock Queue (' + (r.by || 'Shop') + ') \u2022 ' + when(r.updatedAt || r.createdAt)
+        });
+      });
+      timeline.sort(function(a,b){ return (b.ts || 0) - (a.ts || 0); });
+      timeline = timeline.slice(0, 10);
+    }
+    h += '<div class="inv-section"><div class="inv-card"><h3 class="inv-title">\ud83d\udd52 Inventory Activity Timeline</h3>';
+    if (!timeline.length) {
+      h += '<p class="hint">Stock counts, deliveries, Excel imports, and fulfilled restock orders will appear here automatically.</p>';
+    } else {
+      h += timeline.map(function(l){
+        var cls = l.kind === 'delivery' ? ' delivery' : (l.kind === 'deduct' ? ' deduct' : '');
+        return '<div class="inv-timeline-item' + cls + '"><div><strong>' + esc(l.title) + '</strong><br><small class="hint">' + esc(l.meta || when(l.ts)) + '</small></div>' +
+          '<span class="count" style="font-size:13px">' + esc(ago(l.ts)) + '</span></div>';
+      }).join('');
+    }
+    h += '</div></div>';
+
+    /* Owner Metrics */
+    h += '<div class="inv-section"><h3 class="inv-title">\ud83d\udcb0 Owner Metrics</h3><div class="inv-metrics">' +
+      '<div class="inv-card inv-metric"><div>Total Inventory Value</div><div class="amount">' + esc(fmtPrice(Math.round(totalVal), cur)) + '</div></div>' +
+      '<div class="inv-card inv-metric"><div>Low Stock Impact</div><div class="amount">' + esc(fmtPrice(Math.round(lowImpact), cur)) + '</div></div>' +
+      '<div class="inv-card inv-metric"><div>Items To Order</div><div class="amount">' + reorders.length + '</div></div>' +
+      '<div class="inv-card inv-metric"><div>Predicted Stockouts (\u22647d)</div><div class="amount">' + stockouts7d + '</div></div>' +
+      '</div></div>';
+
+    return h;
+  }
+
   function adminHTML(){
+    if (state.adminTab === 'inventory') return inventoryHTML();
     if (state.adminTab === 'history') return historyHTML();
     if (state.adminTab === 'menu') return menuBoardHTML();
     if (state.adminTab === 'connection') return '<p class="hint">Change the database or copy the link for your family in the Connection panel above.</p>';
@@ -738,7 +1140,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   }
   function tabsHTML(){
     var key = state.role === 'admin' ? state.adminTab : state.role;
-    return [['people','People'],['history','History'],['menu','Menu board'],['connection','Connection'],['shop','Shop view'],['kitchen','Kitchen view']].map(function(t){
+    return [['inventory','Inventory'],['people','People'],['history','History'],['menu','Menu board'],['connection','Connection'],['shop','Shop view'],['kitchen','Kitchen view']].filter(function(t){ return !(IN_ARTIFACT && (t[0] === 'connection' || t[0] === 'menu')); }).map(function(t){
       return '<button type="button" class="chip" data-act="atab" data-tab="' + t[0] + '" aria-pressed="' + (key === t[0]) + '">' + t[1] + '</button>';
     }).join('');
   }
@@ -752,6 +1154,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   function paintStaff(){
     var u = state.user, inApp = !!u, admin = inApp && u.role === 'admin';
     var inMenu = admin && state.role === 'admin' && state.adminTab === 'menu';
+    var inInv = admin && state.role === 'admin' && state.adminTab === 'inventory';
     var live = $('#live');
     if (state.mode === 'demo') live.innerHTML = '<span class="dot off"></span>Demo (this device only)';
     else if (inApp) live.innerHTML = '<span class="dot' + (state.connected ? '' : ' off') + '"></span>' + (state.connected ? 'Live' : 'Offline');
@@ -759,7 +1162,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
     var n = $('#notice'); n.innerHTML = '';
     if (state.mode === 'demo') {
-      n.innerHTML = '<div class="notice"><strong>Demo mode.</strong> Requests stay on this device. To share with your family, connect a shared database: sign in as Admin and open the Connection tab.</div>';
+      n.innerHTML = '<div class="notice"><strong>Demo mode.</strong> Requests stay on this device. ' + (IN_ARTIFACT ? 'This published copy is a preview that works on this device only.' : 'To share with your family, connect a shared database: sign in as Admin and open the Connection tab.') + '</div>';
     } else if (inApp && state.syncErr) {
       n.innerHTML = '<div class="notice"><strong>Can\u2019t reach the shared database</strong> (' + esc(state.syncErr) + '). Trying again.' +
         (admin ? '<div style="margin-top:10px"><button type="button" class="small solid" data-act="conn-open">Open connection settings</button></div>' : ' If this keeps happening, tell the admin.') + '</div>';
@@ -785,6 +1188,8 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     $('#qrPanel').hidden = !(inMenu && state.mode === 'cloud' && state.menuTab === 'qr');
     $('#itemPanel').hidden = !(inMenu && state.mode === 'cloud' && state.menuTab === 'items' && state.itemEditing);
     $('#catPanel').hidden = !(inMenu && state.mode === 'cloud' && state.menuTab === 'items' && state.catEditing);
+    $('#invItemPanel').hidden = !(inInv && state.invEditing);
+    $('#invAdjustPanel').hidden = !(inInv && state.invAdjId);
 
     if (!inApp) {
       $('#lMsg').textContent = state.loginMsg || '';
@@ -801,11 +1206,11 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (inMenu) $('#menuTabs').innerHTML = menuTabsHTML();
 
     var pending = state.requests.filter(function(r){ return r.status === 'requested'; }).length;
-    document.title = (state.role === 'kitchen' && pending ? '(' + pending + ') ' : '') + (inMenu ? 'Tin\u2019to \u00b7 Menu board' : 'Tin\u2019to \u00b7 Restock board');
+    document.title = (state.role === 'kitchen' && pending ? '(' + pending + ') ' : '') + (inMenu ? 'Tin\u2019to \u00b7 Menu board' : (inInv ? 'Tin\u2019to \u00b7 Inventory Intelligence' : 'Tin\u2019to \u00b7 Restock board'));
 
-    var ae = document.activeElement, keep = (ae && ae.id === 'cNote') ? ae.selectionStart : null;
+    var ae = document.activeElement, keepId = (ae && (ae.id === 'cNote' || ae.id === 'shopSearch' || ae.id === 'invSearch')) ? ae.id : null, keepPos = keepId ? ae.selectionStart : null;
     $('#app').innerHTML = state.role === 'kitchen' ? kitchenHTML() : (state.role === 'shop' ? shopHTML() : adminHTML());
-    if (keep !== null) { var el = $('#cNote'); if (el) { el.focus(); try { el.setSelectionRange(keep, keep); } catch(x){} } }
+    if (keepId) { var el = $('#' + keepId); if (el) { el.focus(); try { if (keepPos !== null) el.setSelectionRange(keepPos, keepPos); } catch(x){} } }
     hydrate();
   }
   function paintCustomer(){
@@ -886,22 +1291,42 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
         '<div style="margin-top:14px"><button type="button" class="small solid" data-act="seed">Load starter list</button></div></div>';
       return h;
     }
+    h += '<div class="filter-bar">' +
+      '<input type="search" id="shopSearch" placeholder="Search pastries or ingredients\u2026" value="' + esc(state.shopSearch) + '" aria-label="Search items">' +
+      '<div class="filter-chips">' +
+      [['all','All'],['pastry','Pastries'],['ingredient','Ingredients'],['low','Low Stock']].map(function(f){
+        return '<button type="button" class="chip" data-act="shop-filter" data-v="' + f[0] + '" aria-pressed="' + (state.shopFilter === f[0]) + '">' + f[1] + '</button>';
+      }).join('') + '</div></div>';
+
+    var sq = state.shopSearch.trim().toLowerCase(), anyShown = false;
     ['pastry','ingredient'].forEach(function(kind){
-      var list = state.items.filter(function(i){ return (i.kind || 'ingredient') === kind; })
-        .sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
+      if (state.shopFilter === 'pastry' && kind !== 'pastry') return;
+      if (state.shopFilter === 'ingredient' && kind !== 'ingredient') return;
+      var list = state.items.filter(function(i){
+        if ((i.kind || 'ingredient') !== kind) return false;
+        if (sq && String(i.name).toLowerCase().indexOf(sq) < 0 && String(i.category || '').toLowerCase().indexOf(sq) < 0) return false;
+        if (state.shopFilter === 'low') { var m = invMetricsOf(i); if (m.status === 'healthy') return false; }
+        return true;
+      }).sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
       if (!list.length) return;
+      anyShown = true;
       h += '<div class="sub">' + (kind === 'pastry' ? 'Pastries' : 'Ingredients') + '</div><div class="items' + (state.editList ? ' edit' : '') + '">' +
         list.map(function(i){
           var q = state.cart[i.id] || 0;
+          var hasSt = i.stock !== undefined && i.stock !== null && i.stock !== '';
+          var m = hasSt ? invMetricsOf(i) : null;
+          var bCls = m ? (m.status === 'healthy' ? 'ok' : (m.status === 'low' ? 'low' : 'crit')) : '';
+          var badge = m ? '<span class="stock-badge ' + bCls + '">Stock: ' + fmtNum(m.stock) + ' ' + esc(i.unit || 'pcs') + '</span>' : '';
           var x = state.editList ? '<button type="button" class="x" data-act="remove-item" data-id="' + esc(i.id) + '" aria-label="Remove ' + esc(i.name) + ' from the list">×</button>' : '';
           if (!q) {
-            return '<div style="position:relative"><button type="button" class="item" style="width:100%;height:100%" data-act="inc" data-id="' + esc(i.id) + '">' + esc(i.name) + '<small>' + esc(i.unit || 'pcs') + ' · tap to add</small></button>' + x + '</div>';
+            return '<div style="position:relative"><button type="button" class="item" style="width:100%;height:100%" data-act="inc" data-id="' + esc(i.id) + '">' + esc(i.name) + '<small>' + esc(i.unit || 'pcs') + ' · tap to add</small>' + badge + '</button>' + x + '</div>';
           }
-          return '<div style="position:relative"><div class="item sel" style="height:100%"><div class="iname">' + esc(i.name) + ' <small>' + esc(i.unit || 'pcs') + '</small></div>' +
+          return '<div style="position:relative"><div class="item sel" style="height:100%"><div class="iname">' + esc(i.name) + ' <small>' + esc(i.unit || 'pcs') + '</small>' + (badge ? '<div>' + badge + '</div>' : '') + '</div>' +
             '<div class="stepper"><button type="button" data-act="dec" data-id="' + esc(i.id) + '" aria-label="One less ' + esc(i.name) + '">−</button><b>' + q + '</b>' +
             '<button type="button" data-act="inc" data-id="' + esc(i.id) + '" aria-label="One more ' + esc(i.name) + '">+</button></div></div>' + x + '</div>';
         }).join('') + '</div>';
     });
+    if (!anyShown) h += '<div class="empty"><strong>No matching items.</strong>Try a different search term or filter.</div>';
     var cnt = Object.keys(state.cart).filter(function(id){ return itemById(id); }).length;
     if (cnt) h += '<div style="margin-top:22px"><button type="button" class="big" style="width:100%" data-act="send">Confirm and send ' + cnt + (cnt === 1 ? ' item' : ' items') + '</button></div>';
     return h;
@@ -1252,16 +1677,27 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     }, 'Saved ' + name);
   }
 
-  /* ---------- admin: QR code ---------- */
+  /* ---------- admin: QR code (single permanent QR, 10-min customer session) ---------- */
   function customerLink(tok){
     var c = cfg(); if (!c) return '';
     var n = normDb(c.db), inline = !(CONFIG.databaseUrl && CONFIG.apiKey), dbPart = n.ok ? n.url.replace(/^https:\/\//, '') : c.db;
     return pageBase() + '?m=' + tok + (inline ? '&db=' + dbPart + '&key=' + encodeURIComponent(c.key) : '');
   }
   function serverNow(){ return Date.now() + (state.qr ? state.qr.offset : 0); }
+  function getStaticToken(){
+    var st = (state.menu && state.menu.settings && state.menu.settings.qrToken) || '';
+    if (st && /^[a-z0-9]{8,40}$/.test(st)) return st;
+    try { var loc = localStorage.getItem('rb-static-qr') || ''; if (/^[a-z0-9]{8,40}$/.test(loc)) return loc; } catch(e){}
+    return STATIC_QR_DEFAULT;
+  }
   function drawQr(){
-    var link = customerLink(state.qr.tok); $('#qrLink').value = link;
-    $('#qrBox').innerHTML = QR.svg(link, { ecl: 1, dark: '#422B1C', light: '#FFFFFF' }); tickQr();
+    if (!state.qr || !state.qr.tok) return;
+    var link = customerLink(state.qr.tok);
+    if ($('#qrLink').value !== link || !$('#qrBox').innerHTML) {
+      $('#qrLink').value = link;
+      $('#qrBox').innerHTML = QR.svg(link, { ecl: 1, dark: '#422B1C', light: '#FFFFFF' });
+    }
+    $('#qrCount').textContent = 'Permanent QR code \u00b7 Customer link expires 10 mins after scan';
   }
   async function cleanupOld(){
     try {
@@ -1271,23 +1707,34 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       for (k in gr) if (gr[k] && now - gr[k].created > 60 * 60 * 1000) await backend.send('DELETE', 'menuGrants/' + k);
     } catch(e){}
   }
-  async function makeQr(){
-    if (state.qrBusy || !backend || !state.user) return;
+  async function makeQr(forceNew){
+    if (state.qrBusy || !backend || !state.user || state.mode !== 'cloud') return;
+    if (forceNew && !confirm('Reset the permanent QR code? If you have printed the current QR code, you will need to print the new one.')) return;
     state.qrBusy = true;
     try {
-      var tok = rndToken();
+      var tok = forceNew ? rndToken() : getStaticToken();
+      try { localStorage.setItem('rb-static-qr', tok); } catch(x){}
+      if (state.menu && state.menu.settings && state.menu.settings.qrToken !== tok) {
+        state.menu.settings.qrToken = tok;
+        backend.send('PATCH', 'menu/settings', { qrToken: tok }).catch(function(){});
+      }
       await backend.send('PUT', 'menuTokens/' + tok, { created: { '.sv': 'timestamp' } });
       var rec = await backend.get('menuTokens/' + tok);
-      state.qr = { tok: tok, created: rec.created, offset: rec.created - Date.now() };
+      state.qr = { tok: tok, created: (rec && rec.created) || Date.now(), offset: ((rec && rec.created) || Date.now()) - Date.now() };
       drawQr(); cleanupOld();
-    } catch(e){ $('#qrCount').textContent = 'Could not make a code: ' + friendly(e); }
+      if (forceNew) toast('Permanent QR code reset');
+    } catch(e){ $('#qrCount').textContent = 'Could not load QR code: ' + friendly(e); }
     finally { state.qrBusy = false; }
   }
   function tickQr(){
-    if (!state.user || state.role !== 'admin' || state.adminTab !== 'menu' || state.menuTab !== 'qr' || !state.qr) return;
-    var age = serverNow() - state.qr.created, remain = SESSION_MS - age;
-    $('#qrCount').textContent = remain > 0 ? 'This code works for ' + mmss(remain) + ' more' : 'This code has expired. Making a new one\u2026';
-    if (!state.qrBusy && (remain <= 0 || ($('#qrAuto').checked && age >= ROTATE_MS))) makeQr();
+    if (!state.user || state.mode !== 'cloud') return;
+    if (!state.qr) {
+      if (state.role === 'admin' && state.adminTab === 'menu' && state.menuTab === 'qr' && !state.qrBusy) makeQr(false);
+      return;
+    }
+    var age = serverNow() - state.qr.created;
+    /* Silently keep the permanent QR token timestamp fresh in Firebase every 4 minutes so existing rules never reject a customer scan */
+    if (!state.qrBusy && age >= 4 * 60 * 1000) makeQr(false);
   }
   function qrPng(){
     var q = QR.make($('#qrLink').value, 1), n = q.size, quiet = 4, px = Math.max(6, Math.floor(1100 / (n + quiet * 2))), size = (n + quiet * 2) * px;
@@ -1301,6 +1748,26 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     el.select();
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(el.value).then(function(){ toast('Link copied'); }, function(){ toast('Press and hold the link to copy it.'); });
     else { try { document.execCommand('copy'); toast('Link copied'); } catch(x){ toast('Press and hold the link to copy it.'); } }
+  }
+
+  /* ---------- inventory logs ---------- */
+  function loadInvLogs(){
+    try {
+      var loc = JSON.parse(localStorage.getItem('rb-inv-logs') || '[]');
+      if (Array.isArray(loc)) state.invLogs = loc;
+    } catch(e){ state.invLogs = []; }
+  }
+  function saveInvLogs(){
+    try { localStorage.setItem('rb-inv-logs', JSON.stringify(state.invLogs.slice(0, 40))); } catch(e){}
+    if (state.mode === 'cloud' && backend && state.user) {
+      backend.send('PATCH', 'menu/settings', { invLogs: state.invLogs.slice(0, 25) }).catch(function(){});
+    }
+  }
+  function addInvLog(title, meta, kind, reqId){
+    var entry = { id: uid(), ts: Date.now(), title: title, meta: meta || (state.me + ' \u2022 ' + when(Date.now())), kind: kind || 'adjust', reqId: reqId || '' };
+    state.invLogs.unshift(entry);
+    if (state.invLogs.length > 40) state.invLogs = state.invLogs.slice(0, 40);
+    saveInvLogs();
   }
 
   /* ---------- live data ---------- */
@@ -1347,6 +1814,15 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       }
       state.menuErr = ''; state.menuLoaded = true;
       state.menu = { categories: tree.categories || {}, items: tree.items || {}, settings: tree.settings || {} };
+      if (state.menu.settings && Array.isArray(state.menu.settings.invLogs) && state.menu.settings.invLogs.length) {
+        var map = {};
+        state.invLogs.concat(state.menu.settings.invLogs).forEach(function(l){ if (l && l.id) map[l.id] = l; });
+        state.invLogs = Object.keys(map).map(function(k){ return map[k]; }).sort(function(a,b){ return (b.ts || 0) - (a.ts || 0); }).slice(0, 40);
+      }
+      if (state.menu.settings && state.menu.settings.qrToken && (!state.qr || state.qr.tok !== state.menu.settings.qrToken)) {
+        try { localStorage.setItem('rb-static-qr', state.menu.settings.qrToken); } catch(x){}
+        if (state.role === 'admin' && state.adminTab === 'menu' && state.menuTab === 'qr') makeQr(false);
+      }
       paint();
     } });
   }
@@ -1354,12 +1830,18 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   /* ---------- sign-in / sign-out ---------- */
   function enter(user){
     if (backend) backend.stopAll();
-    state.user = user; state.me = user.name; state.role = user.role; state.adminTab = 'people'; state.menuTab = 'items';
+    state.user = user; state.me = user.name; state.role = user.role; state.adminTab = 'inventory'; state.menuTab = 'items';
     state.cart = {}; state.note = ''; state.addOpen = false; state.editList = false; state.connOpen = false; state.pwOpen = false; state.setupOpen = false; state.loginMsg = '';
     state.items = []; state.requests = []; state.history = []; state.historyEnd = false; state.users = {};
     state.menu = { categories:{}, items:{}, settings:{} }; state.menuLoaded = false; state.menuWatching = false; state.menuErr = ''; state.itemEditing = ''; state.catEditing = ''; state.qr = null;
+    state.invEditing = ''; state.invAdjId = '';
+    loadInvLogs();
     startData();
-    if (user.role === 'admin' && state.mode === 'cloud') loadUsers();
+    if (state.mode === 'cloud') {
+      ensureMenuWatch();
+      makeQr(false);
+      if (user.role === 'admin') loadUsers();
+    }
     paint(); window.scrollTo(0, 0);
   }
   function afterSignInGesture(){
@@ -1376,6 +1858,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     try { localStorage.removeItem('rb-user'); } catch(x){}
     state.user = null; state.role = ''; state.me = ''; state.items = []; state.requests = []; state.history = []; state.users = {};
     state.menu = { categories:{}, items:{}, settings:{} }; state.menuLoaded = false; state.menuWatching = false; state.menuErr = ''; state.itemEditing = ''; state.catEditing = ''; state.qr = null;
+    state.invEditing = ''; state.invAdjId = '';
     state.cart = {}; state.addOpen = false; state.editList = false; state.connOpen = false; state.pwOpen = false; state.setupOpen = false;
     state.connected = false; state.syncErr = ''; state.loginMsg = msg || '';
     $('#lName').value = lastName(); paint(); window.scrollTo(0, 0);
@@ -1405,7 +1888,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     $('#cStatus').textContent = state.mode === 'demo' ? 'Currently in demo mode: data stays on this device.' : 'Connected to your Firebase project.';
   }
 
-  /* ---------- CSV import / export ---------- */
+  /* ---------- CSV & Excel (.xlsx) import / export ---------- */
   function csvParse(text){
     var rows = [], row = [], cur = '', q = false;
     text = String(text).replace(/^\uFEFF/, '');
@@ -1428,6 +1911,14 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   function csvClean(s){ s = String(s == null ? '' : s).trim(); return /^'[=+\-@]/.test(s) ? s.slice(1) : s; }
   function toCsv(rows){ return rows.map(function(r){ return r.map(csvCell).join(','); }).join('\r\n') + '\r\n'; }
   function download(name, text){
+    if (IN_ARTIFACT) {
+      window.claude.use('downloads').then(function(d){
+        if (!d) { toast('Saving files is not available in this view.'); return; }
+        return d.save({ filename: name, data: '\uFEFF' + text }).then(function(){ toast('Saved ' + name); },
+          function(err){ if (!err || err.code !== 'declined') toast('Could not save the file.'); });
+      });
+      return;
+    }
     var blob = new Blob(['\uFEFF' + text], { type: 'text/csv;charset=utf-8' });
     var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
@@ -1437,6 +1928,252 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   function showResult(title, lines){ state.ioTitle = title; state.ioText = lines.join('\n'); paint(); try { $('#ioPanel').scrollIntoView({ block: 'nearest' }); } catch(e){} }
   function columns(head, names){
     var idx = {}; names.forEach(function(n){ idx[n] = head.indexOf(n); }); return idx;
+  }
+
+  /* ---------- Inventory CRUD, Adjustments & Excel Sync ---------- */
+  function openInvItem(id){
+    var it = id === 'new' ? null : itemById(id);
+    state.invEditing = id; state.invAdjId = '';
+    $('#invItemTitle').textContent = it ? 'Edit Inventory Item' : 'Add Inventory Item';
+    $('#invName').value = it ? it.name : '';
+    $('#invCat').value = it ? (it.category || (it.kind === 'pastry' ? 'Pastry' : 'Raw Material')) : 'Raw Material';
+    $('#invKind').value = it && it.kind === 'pastry' ? 'pastry' : 'ingredient';
+    $('#invUnit').value = it ? (it.unit || 'pcs') : 'pcs';
+    $('#invCost').value = it && it.cost != null ? it.cost : '';
+    $('#invStock').value = it && it.stock != null ? it.stock : '';
+    $('#invMin').value = it && it.minStock != null ? it.minStock : '';
+    $('#invUsage').value = it && it.dailyUsage != null ? it.dailyUsage : '';
+    $('#invLead').value = it && it.leadTime != null ? it.leadTime : '1';
+    $('#invDeleteBtn').hidden = !it;
+    paint(); $('#invItemPanel').scrollIntoView({ block: 'nearest' }); $('#invName').focus();
+  }
+  async function saveInvItem(){
+    var nm = $('#invName').value.trim();
+    if (!nm) { toast('Type the item name first.'); return; }
+    var cat = $('#invCat').value.trim() || 'Raw Material';
+    var kind = $('#invKind').value === 'pastry' || /pastry|bakery|bread|cake|cookie/i.test(cat) ? 'pastry' : 'ingredient';
+    var unit = $('#invUnit').value.trim() || 'pcs';
+    var cost = Math.max(0, parseFloat($('#invCost').value) || 0);
+    var stock = Math.max(0, parseFloat($('#invStock').value) || 0);
+    var minStock = Math.max(0, parseFloat($('#invMin').value) || (kind === 'pastry' ? 8 : 5));
+    var usage = Math.max(0, parseFloat($('#invUsage').value) || 0);
+    var lead = Math.max(0.5, parseFloat($('#invLead').value) || 1);
+    var isNew = state.invEditing === 'new';
+    var id = isNew ? slug(nm) + '-' + uid().slice(-4) : state.invEditing;
+    var old = isNew ? null : itemById(id);
+    var rec = {
+      name: nm, category: cat, kind: kind, unit: unit,
+      cost: cost, stock: stock, minStock: minStock,
+      dailyUsage: usage, leadTime: lead,
+      updatedAt: Date.now(), updatedBy: state.me
+    };
+    await safe('invitem', async function(){
+      await backend.send('PUT', 'items/' + id, rec);
+      if (isNew) {
+        state.items.push(Object.assign({}, rec, { id: id }));
+        addInvLog('Added item: ' + nm + ' (' + fmtNum(stock) + ' ' + unit + ')', 'Manager ' + state.me + ' \u2022 Inventory Setup', 'delivery');
+      } else {
+        state.items = state.items.map(function(x){ return x.id === id ? Object.assign({}, rec, { id: id }) : x; });
+        if (old && Number(old.stock) !== stock) {
+          addInvLog(nm + ' updated: ' + fmtNum(old.stock || 0) + ' ' + unit + ' \u2192 ' + fmtNum(stock) + ' ' + unit, 'Manager ' + state.me + ' \u2022 Item Edit', 'adjust');
+        }
+      }
+      state.invEditing = ''; paint();
+    }, 'Saved ' + nm);
+  }
+  function updateAdjModeLbl(){
+    var m = $('#invAdjMode').value, it = itemById(state.invAdjId), u = (it && it.unit) || 'pcs';
+    $('#invAdjQtyLbl').textContent = m === 'set' ? 'New Physical Count (' + u + ')' : (m === 'add' ? 'Quantity Received (+' + u + ')' : 'Quantity Used / Wasted (\u2212' + u + ')');
+    if (m === 'set' && it) $('#invAdjQty').value = it.stock != null ? it.stock : 0;
+    else $('#invAdjQty').value = '';
+    $('#invAdjNote').placeholder = m === 'set' ? 'e.g. Physical Count' : (m === 'add' ? 'e.g. Supplier Delivery' : 'e.g. Daily Usage / Spoilage');
+  }
+  function openInvAdjust(id, mode){
+    var it = itemById(id); if (!it) return;
+    state.invAdjId = id; state.invEditing = '';
+    $('#invAdjTitle').textContent = (mode === 'add' ? 'Receive Delivery: ' : 'Update Stock: ') + it.name;
+    $('#invAdjSub').textContent = 'Current Stock: ' + fmtNum(it.stock || 0) + ' ' + (it.unit || 'pcs') + ' \u00b7 Minimum (Par): ' + fmtNum(it.minStock || 0) + ' ' + (it.unit || 'pcs');
+    $('#invAdjMode').value = mode || 'set';
+    $('#invAdjNote').value = '';
+    updateAdjModeLbl();
+    paint(); $('#invAdjustPanel').scrollIntoView({ block: 'nearest' }); $('#invAdjQty').focus();
+  }
+  async function saveInvAdjust(){
+    var it = itemById(state.invAdjId); if (!it) return;
+    var mode = $('#invAdjMode').value, val = parseFloat($('#invAdjQty').value);
+    if (!isFinite(val) || val < 0) { toast('Enter a valid quantity.'); return; }
+    var oldStock = Number(it.stock || 0), newStock = oldStock;
+    if (mode === 'set') newStock = val;
+    else if (mode === 'add') newStock = Math.round((oldStock + val) * 100) / 100;
+    else newStock = Math.max(0, Math.round((oldStock - val) * 100) / 100);
+    var note = $('#invAdjNote').value.trim() || (mode === 'set' ? 'Physical Count' : (mode === 'add' ? 'Supplier Delivery' : 'Inventory Adjustment'));
+    var unit = it.unit || 'pcs';
+    await safe('invadj', async function(){
+      var patch = { stock: newStock, updatedAt: Date.now(), updatedBy: state.me };
+      await backend.send('PATCH', 'items/' + it.id, patch);
+      Object.assign(it, patch);
+      var title = mode === 'add'
+        ? 'Delivery Received: +' + fmtNum(val) + ' ' + unit + ' ' + it.name + ' (' + fmtNum(oldStock) + ' \u2192 ' + fmtNum(newStock) + ' ' + unit + ')'
+        : it.name + ' updated: ' + fmtNum(oldStock) + ' ' + unit + ' \u2192 ' + fmtNum(newStock) + ' ' + unit;
+      addInvLog(title, 'Manager ' + state.me + ' \u2022 ' + note, mode === 'add' ? 'delivery' : 'adjust');
+      state.invAdjId = ''; paint();
+    }, 'Updated ' + it.name + ' to ' + fmtNum(newStock) + ' ' + unit);
+  }
+
+  function parseNumAndUnit(raw, fallbackUnit){
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return { num: 0, unit: fallbackUnit || '' };
+    var cleaned = s.replace(/[\u20B1$,]/g, '').trim();
+    var m = cleaned.match(/^(-?\d+(?:\.\d+)?)\s*([a-zA-Z]+)?/);
+    if (!m) return { num: 0, unit: fallbackUnit || '' };
+    return { num: parseFloat(m[1]) || 0, unit: m[2] || fallbackUnit || '' };
+  }
+  async function importInventoryRows(rows, fileName){
+    if (!rows || rows.length < 2) return showResult('Inventory Import', ['The file "' + fileName + '" has no data rows. Use the Template button to download a sample sheet.']);
+    /* Find header row within first 15 rows */
+    var hRow = 0, head = [];
+    for (var r = 0; r < Math.min(15, rows.length); r++) {
+      var cand = (rows[r] || []).map(function(c){ return String(c == null ? '' : c).trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); });
+      var hasName = cand.some(function(c){ return /^(item|item name|name|product|ingredient|description|material|particulars)$/.test(c); });
+      var hasStock = cand.some(function(c){ return /stock|current|qty|quantity|on hand|balance|ending|actual|inventory|count/.test(c); });
+      if (hasName && hasStock) { hRow = r; head = cand; break; }
+      if (!head.length && hasName) { hRow = r; head = cand; }
+    }
+    if (!head.length) head = (rows[0] || []).map(function(c){ return String(c == null ? '' : c).trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); });
+
+    function findCol(patterns){
+      for (var p = 0; p < patterns.length; p++) {
+        for (var j = 0; j < head.length; j++) if (patterns[p].test(head[j])) return j;
+      }
+      return -1;
+    }
+    var colName = findCol([/^(item|item name|name|product|ingredient|material|particulars)$/, /item|name|product|description/]);
+    var colCat = findCol([/^(category|type|group|department|classification)$/, /category|group|type/]);
+    var colStock = findCol([/^(current|current stock|stock|on hand|ending|balance|actual|qty|quantity)$/, /current|stock|on hand|balance|qty/]);
+    var colMin = findCol([/^(minimum|minimum stock|min stock|min|par|par level|reorder point|rop|alert)$/, /min|par|reorder/]);
+    var colUnit = findCol([/^(unit|uom|units|measure|counted in)$/, /unit|uom/]);
+    var colCost = findCol([/^(unit cost|cost|price|unit price|rate|cost per unit)$/, /cost|price/]);
+    var colUsage = findCol([/^(daily usage|usage|avg usage|consumption|burn rate|usage day)$/, /usage|consumption/]);
+    var colLead = findCol([/^(supplier lead time|lead time|leadtime|delivery days)$/, /lead/]);
+
+    if (colName < 0) return showResult('Inventory Import', ['Could not find an "Item" or "Name" column in "' + fileName + '". Make sure a row names the columns (e.g. Item, Category, Current Stock, Minimum Stock, Unit, Unit Cost).']);
+
+    var byName = {};
+    state.items.forEach(function(it){ byName[String(it.name).trim().toLowerCase()] = it; });
+
+    var batch = {}, updated = 0, added = 0, lines = [];
+    for (var i = hRow + 1; i < rows.length; i++) {
+      var row = rows[i]; if (!row || !row.length) continue;
+      var nm = csvClean(row[colName]);
+      if (!nm || /^(total|subtotal|grand total|item|notes?)$/i.test(nm)) continue;
+      var ex = byName[nm.toLowerCase()] || null;
+      var rawUnit = colUnit >= 0 ? csvClean(row[colUnit]) : '';
+      var stParsed = colStock >= 0 ? parseNumAndUnit(row[colStock], rawUnit || (ex && ex.unit) || 'pcs') : { num: ex ? (ex.stock || 0) : 0, unit: rawUnit || (ex && ex.unit) || 'pcs' };
+      var unit = rawUnit || stParsed.unit || (ex && ex.unit) || 'pcs';
+      var minParsed = colMin >= 0 && row[colMin] !== '' ? parseNumAndUnit(row[colMin], unit) : { num: ex && ex.minStock != null ? ex.minStock : 5 };
+      var costParsed = colCost >= 0 && row[colCost] !== '' ? parseNumAndUnit(row[colCost], '') : { num: ex && ex.cost != null ? ex.cost : 0 };
+      var usageParsed = colUsage >= 0 && row[colUsage] !== '' ? parseNumAndUnit(row[colUsage], '') : { num: ex && ex.dailyUsage != null ? ex.dailyUsage : 0 };
+      var leadParsed = colLead >= 0 && row[colLead] !== '' ? parseNumAndUnit(row[colLead], '') : { num: ex && ex.leadTime != null ? ex.leadTime : 1 };
+      var cat = colCat >= 0 && csvClean(row[colCat]) ? csvClean(row[colCat]) : (ex && ex.category) || 'Raw Material';
+      var kind = /pastry|bakery|bread|cake|cookie|croissant|muffin/i.test(cat + ' ' + nm) ? 'pastry' : ((ex && ex.kind) || 'ingredient');
+      var id = ex ? ex.id : (slug(nm) + '-' + uid().slice(-4));
+      var rec = {
+        name: nm, category: cat, kind: kind, unit: unit,
+        stock: Math.max(0, stParsed.num),
+        minStock: Math.max(0, minParsed.num),
+        cost: Math.max(0, costParsed.num),
+        dailyUsage: Math.max(0, usageParsed.num),
+        leadTime: Math.max(0.5, leadParsed.num || 1),
+        updatedAt: Date.now(), updatedBy: state.me
+      };
+      batch[id] = rec;
+      byName[nm.toLowerCase()] = Object.assign({}, rec, { id: id });
+      if (ex) updated++; else added++;
+    }
+    var keys = Object.keys(batch);
+    if (!keys.length) return showResult('Inventory Import', ['No valid item rows were found in "' + fileName + '".']);
+    try {
+      for (var k = 0; k < keys.length; k += 80) {
+        var part = {}; keys.slice(k, k + 80).forEach(function(id){ part[id] = batch[id]; });
+        await backend.send('PATCH', 'items', part);
+      }
+      var merged = {};
+      state.items.forEach(function(it){ merged[it.id] = it; });
+      keys.forEach(function(id){ merged[id] = Object.assign({}, batch[id], { id: id }); });
+      state.items = Object.keys(merged).map(function(id){ return merged[id]; });
+      addInvLog('Excel/CSV Synced: ' + keys.length + ' items (' + added + ' new, ' + updated + ' updated)', 'Manager ' + state.me + ' \u2022 ' + fileName, 'delivery');
+      lines.push('Successfully synced ' + keys.length + ' inventory items from "' + fileName + '" (' + added + ' added, ' + updated + ' updated).');
+      showResult('Inventory Import Complete', lines);
+    } catch(e){
+      showResult('Inventory Import Error', ['Could not save to database: ' + friendly(e)]);
+    }
+  }
+  function handleInvFile(file){
+    if (!file) return;
+    var ext = (file.name.split('.').pop() || '').toLowerCase();
+    if ((ext === 'xlsx' || ext === 'xls') && window.XLSX) {
+      var rd = new FileReader();
+      rd.onload = function(ev){
+        try {
+          var wb = window.XLSX.read(ev.target.result, { type: 'array' });
+          var sheetName = wb.SheetNames[0];
+          var rows = window.XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
+          guarded('invio', function(){ return importInventoryRows(rows, file.name); });
+        } catch(err){ toast('Could not read Excel file: ' + (err.message || err)); }
+      };
+      rd.readAsArrayBuffer(file);
+    } else {
+      var rd2 = new FileReader();
+      rd2.onload = function(){
+        var rows = csvParse(String(rd2.result));
+        guarded('invio', function(){ return importInventoryRows(rows, file.name); });
+      };
+      rd2.readAsText(file);
+    }
+  }
+  function exportInventoryCsv(){
+    var list = state.items.map(invMetricsOf).sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
+    var rows = [['Item', 'Category', 'Current Stock', 'Minimum Stock', 'Unit', 'Unit Cost', 'Total Value', 'Daily Usage', 'Supplier Lead Time', 'Status', 'Days Remaining', 'Suggested Order']];
+    list.forEach(function(x){
+      rows.push([x.name, x.category, x.stock, x.minStock, x.unit, x.cost, Math.round(x.value * 100) / 100, x.dailyUsage, x.leadTime, x.statusLabel, x.daysLeft, x.suggestedOrder]);
+    });
+    download('tinto-inventory-' + today() + '.csv', toCsv(rows));
+    toast('Exported ' + list.length + ' inventory items to CSV');
+  }
+  function exportInventoryXlsx(){
+    if (!window.XLSX) { exportInventoryCsv(); return; }
+    var list = state.items.map(invMetricsOf).sort(function(a,b){ return String(a.name).localeCompare(String(b.name)); });
+    var healthRows = [['Item', 'Category', 'Current Stock', 'Minimum Stock', 'Unit', 'Unit Cost (PHP)', 'Total Value (PHP)', 'Daily Usage', 'Supplier Lead Time (Days)', 'Status', 'Days Remaining', 'Suggested Order']];
+    list.forEach(function(x){
+      healthRows.push([x.name, x.category, x.stock, x.minStock, x.unit, x.cost, Math.round(x.value * 100) / 100, x.dailyUsage, x.leadTime, x.statusLabel, x.daysLeft, x.suggestedOrder]);
+    });
+    var reorderRows = [['Item', 'Category', 'Current Stock', 'Min Stock', 'Unit', 'Lead Time (Days)', 'Suggested Order', 'Estimated Cost (PHP)', 'Priority']];
+    list.filter(function(x){ return x.needsOrder; }).sort(function(a,b){ return a.daysLeft - b.daysLeft; }).forEach(function(x){
+      reorderRows.push([x.name, x.category, x.stock, x.minStock, x.unit, x.leadTime, x.suggestedOrder, Math.round(x.orderCost * 100) / 100, x.priority]);
+    });
+    var wb = window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(healthRows), 'Inventory Health');
+    window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(reorderRows), 'Reorder Recommendations');
+    window.XLSX.writeFile(wb, 'tinto-inventory-' + today() + '.xlsx');
+    toast('Exported Excel workbook (.xlsx)');
+  }
+  function exportInventoryTemplate(){
+    var rows = [
+      ['Item', 'Category', 'Current Stock', 'Minimum Stock', 'Unit', 'Unit Cost', 'Daily Usage', 'Supplier Lead Time'],
+      ['Fresh Milk', 'Raw Material', '4', '10', 'L', '95', '6', '1'],
+      ['Arabica Beans', 'Raw Material', '3', '8', 'kg', '850', '2.5', '2'],
+      ['16oz Cups', 'Packaging', '20', '100', 'pcs', '4.5', '45', '3'],
+      ['Caramel Syrup', 'Syrup & Sauce', '2', '5', 'L', '420', '0.9', '2'],
+      ['Croissant', 'Pastry', '18', '10', 'pcs', '45', '8', '1']
+    ];
+    if (window.XLSX) {
+      var wb = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(wb, window.XLSX.utils.aoa_to_sheet(rows), 'Inventory Template');
+      window.XLSX.writeFile(wb, 'tinto-inventory-template.xlsx');
+      toast('Downloaded Excel template (.xlsx)');
+    } else {
+      download('tinto-inventory-template.csv', toCsv(rows));
+    }
   }
 
   async function exportUsers(){
@@ -1528,6 +2265,12 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   }
 
   function itemById(id){ return state.items.filter(function(i){ return i.id === id; })[0]; }
+  function findItemForRequest(r){
+    if (!r) return null;
+    if (r.itemId) { var byId = itemById(r.itemId); if (byId) return byId; }
+    var nm = String(r.name || '').trim().toLowerCase();
+    return state.items.filter(function(i){ return String(i.name || '').trim().toLowerCase() === nm; })[0] || null;
+  }
   function selectionHTML(){
     var ids = Object.keys(state.cart).filter(function(id){ return itemById(id); });
     if (!ids.length) return '';
@@ -1545,25 +2288,38 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       '<label class="f">Note for the kitchen (optional)<input id="cNote" type="text" maxlength="140" value="' + esc(state.note) + '" placeholder="e.g. extra for the weekend rush"></label>' +
       '<button type="button" class="big" data-act="send">Confirm and send ' + word + '</button></section>';
   }
-  document.addEventListener('input', function(e){ if (e.target && e.target.id === 'cNote') state.note = e.target.value; });
+  document.addEventListener('input', function(e){
+    if (!e.target) return;
+    if (e.target.id === 'cNote') state.note = e.target.value;
+    else if (e.target.id === 'shopSearch') { state.shopSearch = e.target.value; paint(); }
+    else if (e.target.id === 'invSearch') { state.invSearch = e.target.value; paint(); }
+  });
   document.addEventListener('input', function(e){
     if (e.target && (e.target.id === 'cDb' || e.target.id === 'cKey')) $('#cLink').value = shareLink($('#cDb').value, $('#cKey').value);
   });
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Enter' || !e.target || !e.target.id) return;
-    var map = { lName:'login-demo', lUser:'login-cloud', lPass:'login-cloud', sName:'setup-admin', sUser:'setup-admin', sPass:'setup-admin', pNew:'pw-save' };
+    var map = { lName:'login-demo', lUser:'login-cloud', lPass:'login-cloud', sName:'setup-admin', sUser:'setup-admin', sPass:'setup-admin', pNew:'pw-save', invAdjQty:'inv-adj-save' };
     var act = map[e.target.id]; if (!act) return;
     e.preventDefault(); var btn = document.querySelector('[data-act="' + act + '"]'); if (btn) btn.click();
   });
   document.addEventListener('change', function(e){
-    if (e.target && e.target.id === 'fileIn') {
+    if (!e.target) return;
+    if (e.target.id === 'fileIn') {
       var f = e.target.files && e.target.files[0], kind = state.importKind; if (!f) return;
       var rd = new FileReader();
       rd.onload = function(){ guarded('io', function(){ return kind === 'users' ? importUsers(String(rd.result)) : importHistory(String(rd.result)); }); };
       rd.onerror = function(){ toast('That file could not be read.'); };
       rd.readAsText(f); e.target.value = ''; return;
     }
-    var t = e.target; if (!t || !t.dataset || !t.dataset.roleFor) return;
+    if (e.target.id === 'invFileIn') {
+      var f2 = e.target.files && e.target.files[0]; e.target.value = '';
+      if (f2) handleInvFile(f2);
+      return;
+    }
+    if (e.target.id === 'invCatSelect') { state.invCatFilter = e.target.value; paint(); return; }
+    if (e.target.id === 'invAdjMode') { updateAdjModeLbl(); return; }
+    var t = e.target; if (!t.dataset || !t.dataset.roleFor) return;
     var id = t.dataset.roleFor, role = t.value;
     safe('role' + id, async function(){ await backend.send('PATCH', 'users/' + id, { role: role }); await loadUsers(); }, 'Access updated');
   });
@@ -1573,51 +2329,51 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (a === 'mtab') {
       state.menuTab = b.dataset.tab; state.itemEditing = ''; state.catEditing = '';
       if (state.menuTab === 'settings') { var s0 = settings(); $('#sCur').value = s0.cur; $('#sSold').value = s0.showSold ? 'show' : 'hide'; $('#sNote').value = s0.note; }
-      if (state.menuTab === 'qr') { if (!state.qr || SESSION_MS - (serverNow() - state.qr.created) <= 0) makeQr(); else drawQr(); }
+      if (state.menuTab === 'qr') { if (!state.qr) makeQr(false); else drawQr(); }
       paint(); return true;
     }
     /* settings */
     if (a === 'settings-save') {
-      var rec = { currency: $('#sCur').value.trim(), showSoldOut: $('#sSold').value === 'show', note: $('#sNote').value.trim() };
+      var rec = Object.assign({}, state.menu.settings || {}, { currency: $('#sCur').value.trim(), showSoldOut: $('#sSold').value === 'show', note: $('#sNote').value.trim() });
       state.menu.settings = rec; paint();
-      safe('set', function(){ return backend.send('PUT', 'menu/settings', rec); }, 'Settings saved'); return;
+      safe('set', function(){ return backend.send('PUT', 'menu/settings', rec); }, 'Settings saved'); return true;
     }
     /* categories */
-    if (a === 'cat-new') { openCat('new'); return; }
-    if (a === 'cat-edit') { openCat(id); return; }
-    if (a === 'cat-cancel') { state.catEditing = ''; paint(); return; }
-    if (a === 'cat-up') { move('categories', id, -1); return; }
-    if (a === 'cat-down') { move('categories', id, 1); return; }
+    if (a === 'cat-new') { openCat('new'); return true; }
+    if (a === 'cat-edit') { openCat(id); return true; }
+    if (a === 'cat-cancel') { state.catEditing = ''; paint(); return true; }
+    if (a === 'cat-up') { move('categories', id, -1); return true; }
+    if (a === 'cat-down') { move('categories', id, 1); return true; }
     if (a === 'cat-save') {
-      var cn = $('#catName').value.trim(); if (!cn) { toast('Type a category name.'); return; }
+      var cn = $('#catName').value.trim(); if (!cn) { toast('Type a category name.'); return true; }
       var cid = state.catEditing === 'new' ? 'c' + uid() : state.catEditing, old = state.menu.categories[cid];
       var crec = { name: cn, order: old ? (old.order || 0) : maxOrder(cats()) + 10 };
       state.menu.categories[cid] = crec; state.catEditing = ''; paint();
-      safe('cat', function(){ return backend.send('PUT', 'menu/categories/' + cid, crec); }, 'Saved ' + cn); return;
+      safe('cat', function(){ return backend.send('PUT', 'menu/categories/' + cid, crec); }, 'Saved ' + cn); return true;
     }
     if (a === 'cat-del') {
       var inCat = itemsOf(id).length, cname = (state.menu.categories[id] || {}).name;
-      if (inCat) { toast('Move or delete the ' + inCat + ' item' + (inCat === 1 ? '' : 's') + ' in \u201c' + cname + '\u201d first.'); return; }
-      if (!confirm('Delete the category \u201c' + cname + '\u201d?')) return;
+      if (inCat) { toast('Move or delete the ' + inCat + ' item' + (inCat === 1 ? '' : 's') + ' in \u201c' + cname + '\u201d first.'); return true; }
+      if (!confirm('Delete the category \u201c' + cname + '\u201d?')) return true;
       delete state.menu.categories[id]; paint();
-      safe('cat', function(){ return backend.send('DELETE', 'menu/categories/' + id); }, 'Category deleted'); return;
+      safe('cat', function(){ return backend.send('DELETE', 'menu/categories/' + id); }, 'Category deleted'); return true;
     }
     /* items */
-    if (a === 'item-new') { openItem('new', b.dataset.cat); return; }
-    if (a === 'item-edit') { openItem(id); return; }
-    if (a === 'item-cancel') { state.itemEditing = ''; paint(); return; }
-    if (a === 'item-up') { move('items', id, -1); return; }
-    if (a === 'item-down') { move('items', id, 1); return; }
-    if (a === 'item-save') { saveItem(); return; }
+    if (a === 'item-new') { openItem('new', b.dataset.cat); return true; }
+    if (a === 'item-edit') { openItem(id); return true; }
+    if (a === 'item-cancel') { state.itemEditing = ''; paint(); return true; }
+    if (a === 'item-up') { move('items', id, -1); return true; }
+    if (a === 'item-down') { move('items', id, 1); return true; }
+    if (a === 'item-save') { saveItem(); return true; }
     if (a === 'item-delete') {
       var did = state.itemEditing, dn = (state.menu.items[did] || {}).name;
-      if (!confirm('Delete \u201c' + dn + '\u201d from the menu?')) return;
+      if (!confirm('Delete \u201c' + dn + '\u201d from the menu?')) return true;
       var hadImg = (state.menu.items[did] || {}).img;
       delete state.menu.items[did]; state.itemEditing = ''; paint();
-      safe('item', async function(){ await backend.send('DELETE', 'menu/items/' + did); if (hadImg) await backend.send('DELETE', 'menuImages/' + did); }, 'Item deleted'); return;
+      safe('item', async function(){ await backend.send('DELETE', 'menu/items/' + did); if (hadImg) await backend.send('DELETE', 'menuImages/' + did); }, 'Item deleted'); return true;
     }
-    if (a === 'photo-pick') { $('#photoIn').click(); return; }
-    if (a === 'photo-remove') { state.photo.dataUrl = ''; state.photo.remove = true; setPreview(''); $('#iPhotoMsg').textContent = 'The photo will be removed when you press Save item.'; return; }
+    if (a === 'photo-pick') { $('#photoIn').click(); return true; }
+    if (a === 'photo-remove') { state.photo.dataUrl = ''; state.photo.remove = true; setPreview(''); $('#iPhotoMsg').textContent = 'The photo will be removed when you press Save item.'; return true; }
     if (a === 'mseed') {
       var cs = { c1:{ name:'Coffee', order:10 }, c2:{ name:'Not Coffee', order:20 }, c3:{ name:'Pastries', order:30 } }, its = {}, n = 0;
       [['c1','Espresso',90],['c1','Americano',110],['c1','Cappuccino',130],['c1','Caf\u00e9 Latte',140],['c1','Spanish Latte',150],
@@ -1625,13 +2381,55 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
         n += 10; its['s' + n] = { name:r[1], price:r[2], cat:r[0], desc:'', available:true, order:n, img:0, updated:Date.now() };
       });
       state.menu.categories = cs; state.menu.items = its; paint();
-      safe('seed', function(){ return backend.send('PATCH', 'menu', { categories: cs, items: its }); }, 'Sample menu added. These prices are only examples, so edit them.'); return;
+      safe('seed', function(){ return backend.send('PATCH', 'menu', { categories: cs, items: its }); }, 'Sample menu added. These prices are only examples, so edit them.'); return true;
     }
     /* QR */
-    if (a === 'qr-new') { makeQr(); return; }
-    if (a === 'qr-copy') { copyText('#qrLink'); return; }
-    if (a === 'qr-png') { if (!state.qr) { toast('The code is not ready yet.'); return; } qrPng(); return; }
-    if (a === 'qr-full') { var st = $('#qrStage'); if (st.requestFullscreen) st.requestFullscreen().catch(function(){ toast('Full screen is not available here.'); }); else toast('Full screen is not available here.'); return; }
+    if (a === 'qr-new') { makeQr(true); return true; }
+    if (a === 'qr-copy') { copyText('#qrLink'); return true; }
+    if (a === 'qr-png') { if (!state.qr) { toast('The code is not ready yet.'); return true; } qrPng(); return true; }
+    if (a === 'qr-full') { var st = $('#qrStage'); if (st.requestFullscreen) st.requestFullscreen().catch(function(){ toast('Full screen is not available here.'); }); else toast('Full screen is not available here.'); return true; }
+    return false;
+  }
+
+  /* ---------- inventory dashboard: actions ---------- */
+  function invAction(a, b, id){
+    if (a === 'inv-st-filter') { state.invStatusFilter = b.dataset.v; paint(); return true; }
+    if (a === 'inv-item-new') { openInvItem('new'); return true; }
+    if (a === 'inv-item-edit') { openInvItem(id); return true; }
+    if (a === 'inv-item-cancel') { state.invEditing = ''; paint(); return true; }
+    if (a === 'inv-item-save') { saveInvItem(); return true; }
+    if (a === 'inv-item-delete') {
+      var it = itemById(state.invEditing); if (!it) return true;
+      if (!confirm('Delete "' + it.name + '" from inventory and restock items?')) return true;
+      var did = it.id, dname = it.name;
+      state.items = state.items.filter(function(x){ return x.id !== did; });
+      state.invEditing = ''; paint();
+      safe('invdel', async function(){
+        await backend.send('DELETE', 'items/' + did);
+        addInvLog('Deleted item: ' + dname, 'Manager ' + state.me, 'deduct');
+      }, 'Deleted ' + dname);
+      return true;
+    }
+    if (a === 'inv-adj-open') { openInvAdjust(id, b.dataset.mode || 'set'); return true; }
+    if (a === 'inv-adj-cancel') { state.invAdjId = ''; paint(); return true; }
+    if (a === 'inv-adj-save') { saveInvAdjust(); return true; }
+    if (a === 'inv-receive-sug') {
+      var item = itemById(id); if (!item) return true;
+      var addQty = parseFloat(b.dataset.qty) || 0; if (addQty <= 0) return true;
+      var oldSt = Number(item.stock || 0), newSt = Math.round((oldSt + addQty) * 100) / 100, unit = item.unit || 'pcs';
+      safe('invrec' + id, async function(){
+        var patch = { stock: newSt, updatedAt: Date.now(), updatedBy: state.me };
+        await backend.send('PATCH', 'items/' + item.id, patch);
+        Object.assign(item, patch);
+        addInvLog('Delivery Received: +' + fmtNum(addQty) + ' ' + unit + ' ' + item.name + ' (' + fmtNum(oldSt) + ' \u2192 ' + fmtNum(newSt) + ' ' + unit + ')', 'Manager ' + state.me + ' \u2022 Reorder Received', 'delivery');
+        paint();
+      }, 'Received +' + fmtNum(addQty) + ' ' + unit + ' ' + item.name);
+      return true;
+    }
+    if (a === 'inv-import') { $('#invFileIn').click(); return true; }
+    if (a === 'inv-export-xlsx') { exportInventoryXlsx(); return true; }
+    if (a === 'inv-export-csv') { exportInventoryCsv(); return true; }
+    if (a === 'inv-template') { exportInventoryTemplate(); return true; }
     return false;
   }
 
@@ -1654,7 +2452,9 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     var b = e.target.closest('[data-act]'); if (!b) return;
     var a = b.dataset.act, id = b.dataset.id;
     if (menuAction(a, b, id)) return;
+    if (invAction(a, b, id)) return;
 
+    if (a === 'shop-filter') { state.shopFilter = b.dataset.v; paint(); return; }
     if (a === 'sound') {
       state.soundOn = !state.soundOn;
       try { localStorage.setItem('rb-sound', state.soundOn ? '1' : '0'); } catch(x){}
@@ -1712,13 +2512,13 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
     /* admin */
     if (a === 'atab') {
-      var tab = b.dataset.tab; state.addOpen = false; state.editList = false; state.connOpen = false; state.itemEditing = ''; state.catEditing = '';
+      var tab = b.dataset.tab; state.addOpen = false; state.editList = false; state.connOpen = false; state.itemEditing = ''; state.catEditing = ''; state.invEditing = ''; state.invAdjId = '';
       if (tab === 'shop' || tab === 'kitchen') state.role = tab;
       else {
         state.role = 'admin'; state.adminTab = tab;
         if (tab === 'history') loadHistory(true); else if (tab === 'people') loadUsers();
-        else if (tab === 'menu') { ensureMenuWatch(); if (state.menuTab === 'qr') { if (!state.qr || SESSION_MS - (serverNow() - state.qr.created) <= 0) makeQr(); else drawQr(); } }
-        else fillConn();
+        else if (tab === 'menu') { ensureMenuWatch(); if (state.menuTab === 'qr') { if (!state.qr) makeQr(false); else drawQr(); } }
+        else if (tab === 'connection') fillConn();
       }
       paint(); return;
     }
@@ -1752,7 +2552,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
 
     /* connection */
     if (a === 'conn-open') { fillConn(); state.connOpen = true; paint(); $('#connPanel').scrollIntoView({ block: 'nearest' }); return; }
-    if (a === 'conn-close') { state.connOpen = false; if (state.role === 'admin' && state.adminTab === 'connection') state.adminTab = 'people'; paint(); return; }
+    if (a === 'conn-close') { state.connOpen = false; if (state.role === 'admin' && state.adminTab === 'connection') state.adminTab = 'inventory'; paint(); return; }
     if (a === 'conn-copy') {
       var link = $('#cLink'); if (!link.value) { toast('Fill in the database URL and Web API key first.'); return; }
       link.select();
@@ -1795,8 +2595,24 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
         state.note = '';
       }, 'Sent ' + n + (n === 1 ? ' item' : ' items') + ' to the kitchen').then(function(){ paint(); });
     } else if (a === 'status') {
-      state.requests.forEach(function(r){ if (r.id === id) { r.status = b.dataset.to; r.updatedAt = Date.now(); } }); paint();
-      safe('s' + id, function(){ return backend.send('PATCH', 'requests/' + id, { status: b.dataset.to, updatedAt: Date.now() }); });
+      var to = b.dataset.to, targetReq = null;
+      state.requests.forEach(function(r){ if (r.id === id) { targetReq = r; r.status = to; r.updatedAt = Date.now(); } });
+      paint();
+      safe('s' + id, async function(){
+        var reqPatch = { status: to, updatedAt: Date.now() };
+        if (targetReq && (to === 'sent' || to === 'received') && !targetReq.deducted) {
+          var linked = findItemForRequest(targetReq);
+          if (linked && linked.stock !== undefined && linked.stock !== null && linked.stock !== '') {
+            var oldSt = Number(linked.stock) || 0, reqQty = Number(targetReq.qty) || 0;
+            var newSt = Math.max(0, Math.round((oldSt - reqQty) * 100) / 100);
+            linked.stock = newSt; linked.updatedAt = Date.now(); linked.updatedBy = state.me;
+            targetReq.deducted = true; reqPatch.deducted = true;
+            await backend.send('PATCH', 'items/' + linked.id, { stock: newSt, updatedAt: linked.updatedAt, updatedBy: state.me });
+            addInvLog(linked.name + ' updated: ' + fmtNum(oldSt) + ' ' + (linked.unit || 'pcs') + ' \u2192 ' + fmtNum(newSt) + ' ' + (linked.unit || 'pcs'), 'Restock Request (' + (targetReq.by || 'Shop') + ') \u2022 ' + state.me, 'deduct', targetReq.id);
+          }
+        }
+        await backend.send('PATCH', 'requests/' + id, reqPatch);
+      });
     } else if (a === 'cancel') {
       state.requests = state.requests.filter(function(r){ return r.id !== id; }); paint();
       safe('s' + id, function(){ return backend.send('DELETE', 'requests/' + id); }, 'Request cancelled');
@@ -1805,19 +2621,26 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       safe('i' + id, function(){ return backend.send('DELETE', 'items/' + id); }, 'Item removed');
     } else if (a === 'add-save') {
       var nm = $('#aName').value.trim(); if (!nm) { toast('Type a name first.'); return; }
-      var item = { name: nm, kind: $('#aKind').value, unit: $('#aUnit').value.trim() || 'pcs' };
+      var item = { name: nm, kind: $('#aKind').value, unit: $('#aUnit').value.trim() || 'pcs', category: $('#aKind').value === 'pastry' ? 'Pastry' : 'Raw Material' };
       var iid = slug(nm) + '-' + uid().slice(-4);
       state.items.push(Object.assign({}, item, { id: iid })); state.addOpen = false; paint();
       safe('add', function(){ return backend.send('PUT', 'items/' + iid, item); }, 'Item added');
     } else if (a === 'seed') {
       var all = {};
-      STARTER.forEach(function(s){ var sid = slug(s[0]); all[sid] = { name: s[0], kind: s[1], unit: s[2] }; state.items.push(Object.assign({}, all[sid], { id: sid })); });
+      STARTER.forEach(function(s){
+        var sid = slug(s[0]);
+        all[sid] = { name: s[0], kind: s[1], unit: s[2], stock: s[3], minStock: s[4], cost: s[5], dailyUsage: s[6], leadTime: s[7], category: s[8], updatedAt: Date.now(), updatedBy: state.me };
+        state.items.push(Object.assign({}, all[sid], { id: sid }));
+      });
       paint();
-      safe('seed', function(){ return backend.send('PATCH', 'items', all); }, 'Starter list added');
+      safe('seed', async function(){
+        await backend.send('PATCH', 'items', all);
+        addInvLog('Loaded Tin\u2019to Starter Inventory (' + STARTER.length + ' items)', 'Manager ' + state.me, 'delivery');
+      }, 'Starter inventory list loaded');
     }
   });
 
-  /* ---------- customer: view-only menu with a 10 minute session ---------- */
+  /* ---------- customer: view-only menu with a 10 minute session per QR scan ---------- */
   function readCust(){ try { return JSON.parse(localStorage.getItem('tm-sess') || 'null'); } catch(e){ return null; } }
   function saveCust(s){ try { localStorage.setItem('tm-sess', JSON.stringify(s)); } catch(e){} }
   function custRemain(s){ return s.created + SESSION_MS - (Date.now() + s.offset); }
@@ -1825,18 +2648,23 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (backend) backend.stopAll();
     state.sess = null; state.gate = { title: title, text: text }; $('#cbar').hidden = true; paintCustomer();
   }
-  function expireNow(){ gate('Your viewing time has ended', 'Menu links work for 10 minutes. Please scan the QR code at the counter again to see the menu.'); }
+  function expireNow(){ gate('Your viewing time has ended', 'Menu links work for 10 minutes after scanning. Please scan the QR code at the counter again to see the menu.'); }
   function tickCustomer(){
     if (!state.sess) return;
     var r = custRemain(state.sess), bar = $('#cbar');
     if (r <= 0) { expireNow(); return; }
     bar.hidden = false; bar.textContent = 'This menu is available for ' + mmss(r) + ' more'; bar.classList.toggle('warn', r < 60000);
   }
+  function markCustomerActiveUrl(){
+    try { if (location.hash !== '#active') history.replaceState(null, '', location.pathname + location.search + '#active'); } catch(e){}
+  }
   function startCustomer(sess){
-    state.sess = sess; state.gate = null; state.menuLoaded = false; paintCustomer(); tickCustomer();
+    state.sess = sess; state.gate = null; state.menuLoaded = false;
+    markCustomerActiveUrl();
+    paintCustomer(); tickCustomer();
     backend.watch('menu', { kind: 'menu', cb: function(tree, err){
       if (err) {
-        if (err.status === 401 || err.status === 403) { gate('This link has expired', 'Please scan the QR code at the counter again to see the menu.'); return; }
+        if (err.status === 401 || err.status === 403) { gate('Your viewing time has ended', 'Please scan the QR code at the counter again to see the menu.'); return; }
         state.syncErr = err.message || 'error'; paintCustomer(); return;
       }
       state.syncErr = ''; state.menuLoaded = true;
@@ -1850,19 +2678,24 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (!/^[a-z0-9]{8,40}$/.test(TOKEN)) { gate('This link is not valid', 'Please scan the QR code at the counter to open the menu.'); return; }
     if (!c) { gate('The menu is not available', 'This menu is not set up yet. Please ask our staff for help.'); return; }
     backend = makeCloud(c, 'tm-anon'); paintCustomer();
-    var sess = readCust();
+    var sess = readCust(), isReload = location.hash === '#active';
     try {
       if (sess && sess.token === TOKEN) {
-        if (custRemain(sess) <= 0) { expireNow(); return; }
-        if (await backend.restore() && sess.uid === backend.uid()) { startCustomer(sess); return; }
+        if (custRemain(sess) > 0) {
+          if (await backend.restore() && sess.uid === backend.uid()) { startCustomer(sess); return; }
+        } else if (isReload) {
+          /* Reloading an already-expired tab keeps it expired; scanning the QR code again (no #active hash) starts a fresh 10-minute session */
+          expireNow(); return;
+        }
       }
       if (!(await backend.restore())) await backend.signInAnon();
       await backend.send('PUT', 'menuGrants/' + backend.uid(), { token: TOKEN, created: { '.sv': 'timestamp' } });
       var g = await backend.get('menuGrants/' + backend.uid());
-      sess = { token: TOKEN, uid: backend.uid(), created: g.created, offset: g.created - Date.now() };
+      var createdTs = (g && g.created) || Date.now();
+      sess = { token: TOKEN, uid: backend.uid(), created: createdTs, offset: createdTs - Date.now() };
       saveCust(sess); startCustomer(sess);
     } catch(e){
-      if (e.status === 401 || e.status === 403) gate('This link has expired', 'QR codes are only valid for a short time. Please scan the current code at the counter.');
+      if (e.status === 401 || e.status === 403) gate('This link has expired', 'Please scan the QR code at the counter to start a new 10-minute menu session.');
       else gate('The menu is not available right now', /ADMIN_ONLY|OPERATION_NOT_ALLOWED/.test(e.code || '') ? 'Please ask our staff for help.' : 'Please check your internet connection and try scanning the code again.');
     }
   }
