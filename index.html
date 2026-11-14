@@ -510,6 +510,24 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     ['Pastry cream','ingredient','kg',5,3,310,0.8,1,'Raw Material'],
     ['Cookie dough','ingredient','kg',6,3,290,1,1,'Raw Material']
   ];
+  var STARTER_MENU_ROWS = [
+    ['c1','Espresso',90,'Rich single-origin espresso shot'],
+    ['c1','Americano',110,'Double espresso over hot or iced water'],
+    ['c1','Cappuccino',130,'Espresso with velvety steamed milk foam'],
+    ['c1','Caf\u00e9 Latte',140,'Smooth espresso with creamy steamed milk'],
+    ['c1','Spanish Latte',150,'Sweetened condensed milk & bold espresso'],
+    ['c2','Matcha Latte',150,'Ceremonial-grade Uji matcha & milk'],
+    ['c2','Hot Chocolate',130,'Artisanal dark cocoa & steamed milk'],
+    ['c3','Butter Croissant',95,'Flaky, freshly baked French pastry'],
+    ['c3','Banana Bread',85,'Warm house-baked banana loaf slice']
+  ];
+  function starterMenuData(){
+    var cs = { c1:{ name:'Coffee', order:10 }, c2:{ name:'Not Coffee', order:20 }, c3:{ name:'Pastries', order:30 } }, its = {}, n = 0;
+    STARTER_MENU_ROWS.forEach(function(r){
+      n += 10; its['s' + n] = { name:r[1], price:r[2], cat:r[0], desc:r[3] || '', available:true, order:n, img:0, updated:Date.now() };
+    });
+    return { categories: cs, items: its };
+  }
   var STATUS_LABEL = { requested:'Waiting', making:'Being made', sent:'On the way', received:'Received' };
 
   var SESSION_MS = 10 * 60 * 1000, ROTATE_MS = 5 * 60 * 1000, DEFAULT_CUR = '\u20B1', STATIC_QR_DEFAULT = 'tintomenu01';
@@ -586,6 +604,7 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     if (IN_ARTIFACT) return null;
     var d = params.get('db'), k = params.get('key');
     if (d && k) { try { localStorage.setItem('rb-cfg', JSON.stringify({ db:d, key:k })); } catch(e){} return { db:d, key:k }; }
+    if (CUSTOMER && CONFIG.databaseUrl && CONFIG.apiKey) return { db:CONFIG.databaseUrl, key:CONFIG.apiKey };
     try {
       var st = JSON.parse(localStorage.getItem('rb-cfg') || 'null');
       if (st && st.db && st.key) {
@@ -1529,9 +1548,23 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       (i.img ? '<img class="thumb" data-iid="' + esc(i.id) + '" data-v="' + esc(i.img) + '" alt="" decoding="async">' : '') + '</article>';
   }
   function menuHTML(){
-    var st = settings();
-    var list = cats().map(function(c){ return { c: c, items: itemsOf(c.id).filter(function(i){ return st.showSold || i.available !== false; }) }; })
-      .filter(function(x){ return x.items.length; });
+    var st = settings(), cs = cats(), all = allItems();
+    /* If the database has no menu items or categories saved yet, fall back to the starter coffee bar menu so customers never see an empty screen */
+    if (!cs.length && !all.length) {
+      var def = starterMenuData();
+      cs = Object.keys(def.categories).map(function(id){ return Object.assign({}, def.categories[id], { id: id }); }).sort(byOrder);
+      all = Object.keys(def.items).map(function(id){ return Object.assign({}, def.items[id], { id: id }); });
+    }
+    var known = {};
+    cs.forEach(function(c){ known[c.id] = 1; });
+    var list = cs.map(function(c){
+      return {
+        c: c,
+        items: all.filter(function(i){ return i.cat === c.id && (st.showSold || i.available !== false); }).sort(byOrder)
+      };
+    }).filter(function(x){ return x.items.length; });
+    var orphans = all.filter(function(i){ return !known[i.cat] && (st.showSold || i.available !== false); }).sort(byOrder);
+    if (orphans.length) list.push({ c: { id: 'other', name: cs.length ? 'More Items' : 'Menu' }, items: orphans });
     if (!list.length) return '<div class="empty"><strong>The menu is being updated.</strong>Please check back in a moment.</div>';
     var h = '<nav class="chips" aria-label="Menu sections">' + list.map(function(x){ return '<a href="#c-' + esc(x.c.id) + '">' + esc(x.c.name) + '</a>'; }).join('') + '</nav>';
     list.forEach(function(x){
@@ -1680,7 +1713,9 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
   /* ---------- admin: QR code (single permanent QR, 10-min customer session) ---------- */
   function customerLink(tok){
     var c = cfg(); if (!c) return '';
-    var n = normDb(c.db), inline = !(CONFIG.databaseUrl && CONFIG.apiKey), dbPart = n.ok ? n.url.replace(/^https:\/\//, '') : c.db;
+    var n = normDb(c.db), cfgN = normDb(CONFIG.databaseUrl);
+    var sameAsConfig = !!(CONFIG.databaseUrl && CONFIG.apiKey && n.ok && cfgN.ok && n.url === cfgN.url && c.key === CONFIG.apiKey);
+    var inline = !sameAsConfig, dbPart = n.ok ? n.url.replace(/^https:\/\//, '') : c.db;
     return pageBase() + '?m=' + tok + (inline ? '&db=' + dbPart + '&key=' + encodeURIComponent(c.key) : '');
   }
   function serverNow(){ return Date.now() + (state.qr ? state.qr.offset : 0); }
@@ -1776,6 +1811,16 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
     tree = tree || {};
     var its = tree.items || {}, rq = tree.requests || {};
     state.items = Object.keys(its).map(function(id){ return Object.assign({}, its[id], { id: id }); });
+    if (!state.items.length && state.user && state.user.role === 'admin' && !state._itemsAutoSeeded) {
+      state._itemsAutoSeeded = true;
+      var seedAll = {};
+      STARTER.forEach(function(s){
+        var sid = slug(s[0]);
+        seedAll[sid] = { name: s[0], kind: s[1], unit: s[2], stock: s[3], minStock: s[4], cost: s[5], dailyUsage: s[6], leadTime: s[7], category: s[8], updatedAt: Date.now(), updatedBy: state.me };
+        state.items.push(Object.assign({}, seedAll[sid], { id: sid }));
+      });
+      backend.send('PATCH', 'items', seedAll).catch(function(){});
+    }
     state.requests = Object.keys(rq).map(function(id){ return Object.assign({}, rq[id], { id: id }); })
       .sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); }).slice(0, 100);
     Object.keys(state.cart).forEach(function(id){ if (!itemById(id)) delete state.cart[id]; });
@@ -1814,6 +1859,11 @@ select.sm{min-height:48px;width:auto;padding:6px 10px}
       }
       state.menuErr = ''; state.menuLoaded = true;
       state.menu = { categories: tree.categories || {}, items: tree.items || {}, settings: tree.settings || {} };
+      if (!Object.keys(state.menu.categories).length && !Object.keys(state.menu.items).length && state.user && state.user.role === 'admin' && !state.menu._autoSeeded) {
+        var sm = starterMenuData();
+        state.menu.categories = sm.categories; state.menu.items = sm.items; state.menu._autoSeeded = true;
+        backend.send('PATCH', 'menu', { categories: sm.categories, items: sm.items }).catch(function(){});
+      }
       if (state.menu.settings && Array.isArray(state.menu.settings.invLogs) && state.menu.settings.invLogs.length) {
         var map = {};
         state.invLogs.concat(state.menu.settings.invLogs).forEach(function(l){ if (l && l.id) map[l.id] = l; });
